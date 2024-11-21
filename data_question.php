@@ -53,7 +53,7 @@ include 'includes/functions.php';
                 <div class="d-flex justify-content-between align-items-center">
                     <span><?= $result['title'] ?></span>
                     <div class="d-flex">
-                        <a href="add_question.php" class="btn btn-primary me-2">Buat Soal</a>
+                        <a href="add_question.php?id_quiz=<?= $id_quiz ?>" class="btn btn-primary me-2">Buat Soal</a>
                         <a href="data_quiz.php?id_subject=<?= $result['subject_id'] ?>"
                             class="btn btn-danger">Kembali</a>
                     </div>
@@ -78,7 +78,15 @@ include 'includes/functions.php';
                         <div class="col-md-6">
                             <div class="card shadow-sm border rounded mb-3">
                                 <div class="card-header">
-                                    Soal <?= $no ?>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Soal <?= $no ?></span>
+                                        <div class="d-flex">
+                                            <a href="edit_question.php?id_question=<?= $row['id_question'] ?>" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
+                                            <button type="button" class="btn_delete btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-question="<?= $row['id_question'] ?>" data-bs-target="#confirm_delete">
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body px-3">
                                     <p><?= $row['question_text'] ?></p>
