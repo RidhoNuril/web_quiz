@@ -73,6 +73,32 @@
         return $response;
     }
 
+    function insert_user($user_nis, $username, $password){
+        include 'includes/db.php';
+
+        if($user_nis && $username != ''){
+            $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $user_nis, $username, $password); 
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'User berhasil Ditambah',
+                'redirect' => 'view_account.php'
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Semua field wajib diisi'
+            ];
+        }
+
+        return $response;
+    }
+
+
+
+
     function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $thumbnail){
         include 'includes/db.php';
 
