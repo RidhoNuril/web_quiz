@@ -6,12 +6,13 @@ if (isset($_SESSION["is_login"]) == false) {
     header("location: login.php");
     exit();
 }
-if(isset($_POST['username'])){
-    $username = isset($_POST['username']) ? strip_tags($_POST['username']) : '';
-    $user_nis = isset($_POST['user_nis']) ? strip_tags($_POST['user_nis']) : '';
-    $password = isset($_POST['password']) ? strip_tags($_POST['password']) : '';
 
-    $insert_user = insert_user($user_nis, $username, $password);
+if(isset($_POST['username'])){
+    $user_nis = isset($_POST['user_nis']) ? strip_tags($_POST['user_nis']) : '';
+    $user_name = isset($_POST['username']) ? strip_tags($_POST['username']) : '';
+    $user_password = isset($_POST['password']) ? strip_tags($_POST['password']) : '';
+
+    $insert_user = insert_user($user_nis, $user_name, $user_password);
     echo json_encode($insert_user);
     exit();
 }
@@ -69,6 +70,7 @@ if(isset($_POST['username'])){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     $(document).ready(function() {
+        
         $('#form_tambah_user').submit(function(e) {
             e.preventDefault();
 

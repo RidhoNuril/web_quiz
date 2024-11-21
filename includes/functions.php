@@ -73,12 +73,12 @@
         return $response;
     }
 
-    function insert_user($user_nis, $username, $password){
+    function insert_user($user_nis, $user_name, $user_password){
         include 'includes/db.php';
 
         if($user_nis && $username != ''){
             $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $user_nis, $username, $password); 
+            $stmt->bind_param("sss", $user_nis, $user_name, $user_password); 
             $stmt->execute();
 
             $response = [

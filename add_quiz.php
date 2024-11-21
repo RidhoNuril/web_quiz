@@ -31,7 +31,7 @@ if(isset($_POST['title'])){
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="mb-3">Tambah QUIZZ</h1>
+        <h1 class="mb-3">Tambah Quiz</h1>
         <div class="shadow p-4 rounded">
             <form action="add_quiz.php" method="POST" id="form_tambah_quiz">
                 <div class="row">
