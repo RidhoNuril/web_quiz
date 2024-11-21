@@ -9,11 +9,11 @@ if (isset($_SESSION["is_login"]) == false) {
 include 'includes/db.php';
 include 'includes/functions.php';
 
-// if(isset($_GET['delete_id'])){
-//     $delete_quiz = delete_quiz($_GET['delete_id']);
-//     echo json_encode($delete_quiz);
-//     exit();
-// }
+if(isset($_GET['delete_id'])){
+    $delete_question = delete_question($_GET['delete_id']);
+    echo json_encode($delete_question);
+    exit();
+}
 
 ?>
 <!DOCTYPE html>
@@ -140,18 +140,18 @@ include 'includes/functions.php';
         $(document).ready(function () {
 
             $('.btn_delete').click(function () {
-                let quiz_id = $(this).data('quiz');
-                let row = $(this).closest('tr');
+                let question_id = $(this).data('question');
+                let row = $(this).closest('.col-md-6');
                 let form_delete = $('#ajax-delete');
 
-                form_delete.attr('action', 'data_quiz.php?delete_id=' + quiz_id);
+                form_delete.attr('action', 'data_question.php?delete_id=' + question_id);
                 form_delete.data('row', row);
             });
 
             $('.btn_close_delete').click(function () {
                 let form_delete = $('#ajax-delete');
 
-                form_delete.attr('action', 'data_quiz.php');
+                form_delete.attr('action', 'data_question.php');
             });
 
             $('#ajax-delete').submit(function (e) {

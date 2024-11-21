@@ -306,4 +306,27 @@
         return $response;
     }
 
+    function delete_question($id){
+        include 'includes/db.php';
+
+        if($id != ''){
+            $stmt = $db->prepare("DELETE FROM questions WHERE id_question=?");
+            $stmt->bind_param("i",$id);
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Quiz berhasil dihapus'
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Id quiz tidak ditemukan'
+            ];
+        }
+
+        return $response;
+    }
+
+
 ?>
