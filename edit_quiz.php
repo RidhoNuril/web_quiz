@@ -63,7 +63,7 @@ if (isset($_GET['id'])) {
                         <input type="hidden" value="<?= $quiz['id_quiz'] ?>" name="id_quiz">
                         <input type="hidden" value="<?= $quiz['subject_id'] ?>" name="subject_id">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Judul Quiz</label>
+                            <label for="title" class="form-label">JUDUL QUIZ</label>
                             <input type="text" class="form-control" id="title" name="title" value="<?= $quiz['title'] ?>" placeholder="Masukkan judul quiz" required>
                         </div>
                     </div>
