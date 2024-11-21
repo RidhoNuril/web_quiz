@@ -29,8 +29,8 @@
 </head>
 <body>
     <?php 
-        if(isset($_GET['id']) && $_GET['id'] != ''){
-            $id_subject = $_GET['id'];
+        if(isset($_GET['id_subject']) && $_GET['id_subject'] != ''){
+            $id_subject = $_GET['id_subject'];
     
             $query = $db->query("SELECT subject_name FROM subject WHERE subject_id=$id_subject");
             $result = $query->fetch_assoc();
@@ -79,9 +79,9 @@
                                 <td><?= $date_format ?></td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href='add_question.php' class='btn btn-secondary btn-sm me-1'>Tambah Soal</a>
-                                        <a href='papan_peringkat.php?id=<?= $row['id_quiz'] ?>' class='btn btn-primary btn-sm me-1'>Papan Peringkat</a>
-                                        <a href='edit_quiz.php?id=<?= $row['id_quiz'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
+                                        <a href='add_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Tambah Soal</a>
+                                        <a href='papan_peringkat.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-primary btn-sm me-1'>Papan Peringkat</a>
+                                        <a href='edit_quiz.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
                                         <button type="button" class="btn_delete btn btn-sm btn-danger" data-bs-toggle="modal" data-quiz="<?= $row['id_quiz'] ?>" data-bs-target="#confirm_delete">
                                             Hapus
                                         </button>

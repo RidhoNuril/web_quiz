@@ -24,12 +24,10 @@ if(isset($_POST['subject_name'])){
 }
 
 
+// Ambil data subject berdasarkan id subject
+if (isset($_GET['id_subject'])) {
+    $subject_id = $_GET['id_subject'];
 
-// Ambil data user berdasarkan NIS
-if (isset($_GET['id'])) {
-    $subject_id = $_GET['id'];
-
-    // Menggunakan MySQLi untuk query
     $stmt = $db->prepare("SELECT * FROM subject WHERE subject_id = ?");
     $stmt->bind_param("i", $subject_id);
     $stmt->execute();
@@ -45,20 +43,6 @@ if (isset($_GET['id'])) {
     echo "id subject tidak disertakan!";
     exit();
 }
-
-// Update data user tanpa hashing password
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $username = $_POST['username'];
-//     $password = !empty($_POST['password']) ? $_POST['password'] : $user['password']; // Tidak melakukan hashing
-
-//     $stmt = $db->prepare("UPDATE akun_users SET username = ?, password = ? WHERE user_nis = ?");
-//     $stmt->bind_param("sss", $username, $password, $user_nis);
-//     $stmt->execute();
-
-//     header("Location: view_account.php");
-//     exit();
-// }
-
 
 ?>
 <!DOCTYPE html>

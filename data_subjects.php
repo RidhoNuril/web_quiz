@@ -61,8 +61,8 @@
                                 <td><?= $row['subject_desc'] ?></td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href='data_quiz.php?id=<?= $row['subject_id'] ?>' class='btn btn-secondary btn-sm me-1'><?= count_quiz_subject($row['subject_id']) ?><span class="ms-1">Quiz</span></a>
-                                        <a href='edit_subject.php?id=<?= $row['subject_id'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
+                                        <a href='data_quiz.php?id_subject=<?= $row['subject_id'] ?>' class='btn btn-secondary btn-sm me-1'><?= count_quiz_subject($row['subject_id']) ?><span class="ms-1">Quiz</span></a>
+                                        <a href='edit_subject.php?id_subject=<?= $row['subject_id'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
                                         <button type="button" class="btn_delete btn btn-sm btn-danger" data-bs-toggle="modal" data-subject="<?= $row['subject_id'] ?>" data-bs-target="#confirm_delete">
                                             Hapus
                                         </button>

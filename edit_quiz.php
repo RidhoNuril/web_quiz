@@ -19,8 +19,8 @@ if(isset($_POST['title'])){
     exit();
 }
 
-if (isset($_GET['id'])) {
-    $quiz_id = $_GET['id'];
+if (isset($_GET['id_quiz'])) {
+    $quiz_id = $_GET['id_quiz'];
 
     // Menggunakan MySQLi untuk query
     $stmt = $db->prepare("SELECT * FROM quiz WHERE id_quiz = ?");
@@ -69,7 +69,7 @@ if (isset($_GET['id'])) {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
-                <a href="data_quiz.php?id=<?=$quiz['subject_id'] ?>" class="btn btn-secondary">Kembali</a>
+                <a href="data_quiz.php?id_subject=<?=$quiz['subject_id'] ?>" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>
