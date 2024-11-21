@@ -51,7 +51,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <span>Quiz <?= $result['subject_name'] ?></span>
                     <div class="d-flex">
-                        <a href="add_quiz.php?id=<?= $id_subject ?>" class="btn btn-primary me-2">Tambah quiz</a>
+                        <a href="add_quiz.php?id_subject=<?= $id_subject ?>" class="btn btn-primary me-2">Tambah quiz</a>
                         <a href="data_subjects.php" class="btn btn-danger">Kembali</a>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                                 <td><?= $date_format ?></td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href='data_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Tambah Soal</a>
+                                        <a href='data_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Buat Soal</a>
                                         <a href='papan_peringkat.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-primary btn-sm me-1'>Papan Peringkat</a>
                                         <a href='edit_quiz.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
                                         <button type="button" class="btn_delete btn btn-sm btn-danger" data-bs-toggle="modal" data-quiz="<?= $row['id_quiz'] ?>" data-bs-target="#confirm_delete">

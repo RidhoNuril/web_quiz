@@ -170,7 +170,7 @@
             $response = [
                 'status' => 'success',
                 'message' => 'Quiz berhasil dibuat',
-                'redirect' => 'data_quiz.php?id='.$subject_id.''
+                'redirect' => 'data_quiz.php?id_quiz='.$subject_id.''
             ];
         }else{
             $response = [
@@ -193,7 +193,7 @@
             $response = [
                 'status' => 'success',
                 'message' => 'Quiz berhasil diupdate',
-                'redirect' => 'data_quiz.php?id='.$subject_id.''
+                'redirect' => 'data_quiz.php?id_subject='.$subject_id.''
             ];
         }else{
             $response = [

@@ -36,15 +36,15 @@ if(isset($_POST['title'])){
             <form action="add_quiz.php" method="POST" id="form_tambah_quiz">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="hidden" value="<?= $_GET['id'] ?>" name="subject_id">
+                        <input type="hidden" value="<?= $_GET['id_subject'] ?>" name="subject_id">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Judul QUIZ</label>
+                            <label for="title" class="form-label">Judul Quiz</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Masukkan judul quiz" required>
                         </div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Tambah</button>
-                <a href="data_quiz.php?id_subject=<?= $_GET['id'] ?>" class="btn btn-secondary">Kembali</a>
+                <a href="data_quiz.php?id_subject=<?= $_GET['id_subject'] ?>" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>
