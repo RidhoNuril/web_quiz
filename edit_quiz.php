@@ -14,8 +14,8 @@ if(isset($_POST['title'])){
     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';
     $judul_quiz = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
 
-    $insert_quiz = insert_quiz($subject_id, $judul_quiz);
-    echo json_encode($insert_quiz);
+    $update_quiz = update_quiz($id_quiz, $subject_id, $judul_quiz);
+    echo json_encode($update_quiz);
     exit();
 }
 
@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
     $quiz = $result->fetch_assoc();
 
     if (!$quiz) {
-        echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_quiz.php'</script>";
+        echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
         exit();
     }
 } else {
@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
     <div class="container mt-5">
         <h1 class="mb-3">Edit Quiz</h1>
         <div class="shadow p-4 rounded">
-            <form action="add_quiz.php" method="POST" id="form_tambah_quiz">
+            <form action="edit_quiz.php" method="POST" id="form_edit_quiz">
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" value="<?= $quiz['id_quiz'] ?>" name="id_quiz">
@@ -78,7 +78,7 @@ if (isset($_GET['id'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('#form_tambah_quiz').submit(function(e){
+            $('#form_edit_quiz').submit(function(e){
                 e.preventDefault();
 
                 let form = $(this);
