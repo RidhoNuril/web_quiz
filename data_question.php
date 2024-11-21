@@ -65,7 +65,7 @@ if(isset($_GET['delete_id'])){
                     $no = 0;
                     $count_row = $stmt->num_rows;
                 ?>
-                <h3 class="mb-4 fs-3"><?= $count_row ?> Soal</h3>
+                <h3 class="mb-4 fs-3"><span id="jumlah_soal"><?= $count_row ?></span> Soal</h3>
                 <div class="row">
                 <?php
                     if($count_row > 0){
@@ -143,9 +143,11 @@ if(isset($_GET['delete_id'])){
                 let question_id = $(this).data('question');
                 let row = $(this).closest('.col-md-6');
                 let form_delete = $('#ajax-delete');
+                let jumlah_soal = $('#jumlah_soal').text();
 
                 form_delete.attr('action', 'data_question.php?delete_id=' + question_id);
                 form_delete.data('row', row);
+                form_delete.data('jumlah_soal', jumlah_soal);
             });
 
             $('.btn_close_delete').click(function () {
@@ -161,6 +163,7 @@ if(isset($_GET['delete_id'])){
                 let url = form.attr('action');
                 let method = form.attr('method');
                 let row = form.data('row');
+                let jumlah_soal = form.data('jumlah_soal') - 1;
 
                 $.ajax({
                     url: url,
@@ -172,6 +175,7 @@ if(isset($_GET['delete_id'])){
                     success: function (response) {
                         if (response.status == 'success') {
                             row.remove();
+                            $('#jumlah_soal').text(jumlah_soal);
 
                             toastr.success(response.message, 'Success !', {
                                 closeButton: true,
