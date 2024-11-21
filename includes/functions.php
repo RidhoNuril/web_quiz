@@ -182,6 +182,29 @@
         return $response;
     }
 
+    function update_quiz($id_quiz, $subject_id, $judul_quiz){
+        include 'includes/db.php';
+
+        if($judul_quiz != ''){
+            $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=? WHERE id_quiz=?");
+            $stmt->bind_param("isi", $subject_id, $judul_quiz, $id_quiz);
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Quiz berhasil diupdate',
+                'redirect' => 'data_quiz.php?id='.$subject_id.''
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Judul quiz wajib diisi'
+            ];
+        }
+
+        return $response;
+    }
+
     function delete_quiz($id){
         include 'includes/db.php';
 
