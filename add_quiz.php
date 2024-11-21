@@ -44,7 +44,7 @@ if(isset($_POST['title'])){
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Tambah</button>
-                <a href="data_quiz.php?id=<?= $_GET['id'] ?>" class="btn btn-secondary">Kembali</a>
+                <a href="data_quiz.php?id_subject=<?= $_GET['id'] ?>" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

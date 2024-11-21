@@ -9,11 +9,11 @@
     include 'includes/db.php';
     include 'includes/functions.php';
 
-    if(isset($_GET['delete_id'])){
-        $delete_quiz = delete_quiz($_GET['delete_id']);
-        echo json_encode($delete_quiz);
-        exit();
-    }
+    // if(isset($_GET['delete_id'])){
+    //     $delete_quiz = delete_quiz($_GET['delete_id']);
+    //     echo json_encode($delete_quiz);
+    //     exit();
+    // }
     
 ?>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pondok Bahrul Ulum Quiz App - Lihat Data Quiz</title>
+    <title>Pondok Bahrul Ulum Quiz App - Lihat Data Question</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -29,14 +29,14 @@
 </head>
 <body>
     <?php 
-        if(isset($_GET['id_subject']) && $_GET['id_subject'] != ''){
-            $id_subject = $_GET['id_subject'];
+        if(isset($_GET['id_quiz']) && $_GET['id_quiz'] != ''){
+            $id_quiz = $_GET['id_quiz'];
     
-            $query = $db->query("SELECT subject_name FROM subject WHERE subject_id=$id_subject");
+            $query = $db->query("SELECT id_quiz, subject_id, title FROM quiz WHERE id_quiz=$id_quiz");
             $result = $query->fetch_assoc();
 
             if (!$result) {
-                echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
+                echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_quiz.php?id_subject=$result[subject_id]'</script>";
                 exit();
             }
         }else{
@@ -49,10 +49,10 @@
         <div class="card mt-3 shadow-lg rounded mb-4">
             <h5 class="card-header p-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <span>Quiz <?= $result['subject_name'] ?></span>
+                    <span><?= $result['title'] ?></span>
                     <div class="d-flex">
-                        <a href="add_quiz.php?id=<?= $id_subject ?>" class="btn btn-primary me-2">Tambah quiz</a>
-                        <a href="data_subjects.php" class="btn btn-danger">Kembali</a>
+                        <a href="add_question.php" class="btn btn-primary me-2">Tambah Soal</a>
+                        <a href="data_quiz.php?id_subject=<?= $result['subject_id'] ?>" class="btn btn-danger">Kembali</a>
                     </div>
                 </div>
             </h5>
@@ -60,14 +60,12 @@
                 <table class="table table-bordered table-striped mt-4" class="display" id="table">
                     <thead class="table-secondary">
                         <tr>
-                            <th>Judul</th>
-                            <th>Dibuat</th>
-                            <th>Aksi</th>
+                            <th col="3" class="text-center">Questions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $stmt = $db->query("SELECT * FROM quiz WHERE subject_id=$id_subject");
+                        $stmt = $db->query("SELECT * FROM questions WHERE id_quiz=$result[id_quiz]");
                         $no = 1;
                         while ($row = $stmt->fetch_assoc()) { 
                             $no++;
@@ -79,7 +77,7 @@
                                 <td><?= $date_format ?></td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href='data_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Tambah Soal</a>
+                                        <a href='add_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Tambah Soal</a>
                                         <a href='papan_peringkat.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-primary btn-sm me-1'>Papan Peringkat</a>
                                         <a href='edit_quiz.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-warning btn-sm me-1'>Edit</a>
                                         <button type="button" class="btn_delete btn btn-sm btn-danger" data-bs-toggle="modal" data-quiz="<?= $row['id_quiz'] ?>" data-bs-target="#confirm_delete">
