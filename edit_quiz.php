@@ -6,7 +6,7 @@ if (isset($_SESSION["is_login"]) == false) {
     exit();
 }
 
-include 'includes/db.php'; // Pastikan path ke file db.php benar
+include 'includes/db.php';
 include 'includes/functions.php';
 
 if(isset($_POST['title'])){
