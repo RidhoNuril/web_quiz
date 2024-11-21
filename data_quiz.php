@@ -29,10 +29,20 @@
 </head>
 <body>
     <?php 
-        $id_subject = $_GET['id'];
+        if(isset($_GET['id']) && $_GET['id'] != ''){
+            $id_subject = $_GET['id'];
+    
+            $query = $db->query("SELECT subject_name FROM subject WHERE subject_id=$id_subject");
+            $result = $query->fetch_assoc();
 
-        $query = $db->query("SELECT subject_name FROM subject WHERE subject_id=$id_subject");
-        $result = $query->fetch_assoc();
+            if (!$result) {
+                echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
+                exit();
+            }
+        }else{
+            echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
+            exit();
+        }
     ?>
     <div class="container mt-5">
         <!-- Tabel Data quiz -->
