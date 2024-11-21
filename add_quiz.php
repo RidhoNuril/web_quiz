@@ -38,7 +38,7 @@ if(isset($_POST['title'])){
                     <div class="col-md-12">
                         <input type="hidden" value="<?= $_GET['id'] ?>" name="subject_id">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Judul Quiz</label>
+                            <label for="title" class="form-label">Judul QUIZ</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Masukkan judul quiz" required>
                         </div>
                     </div>
