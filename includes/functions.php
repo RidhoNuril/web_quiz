@@ -73,32 +73,6 @@
         return $response;
     }
 
-    function insert_user($user_nis, $user_name, $user_password){
-        include 'includes/db.php';
-
-        if($user_nis && $username != ''){
-            $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $user_nis, $user_name, $user_password); 
-            $stmt->execute();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'User berhasil Ditambah',
-                'redirect' => 'view_account.php'
-            ];
-        }else{
-            $response = [
-                'status' => 'error',
-                'message' => 'Semua field wajib diisi'
-            ];
-        }
-
-        return $response;
-    }
-
-
-
-
     function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $thumbnail){
         include 'includes/db.php';
 
@@ -252,4 +226,84 @@
 
         return $response;
     }
+
+    function insert_user($user_nis, $user_name, $user_password){
+        include 'includes/db.php';
+
+        if($user_nis && $user_password && $user_name != ''){
+            $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $user_nis, $user_name, $user_password); 
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'User berhasil Ditambah',
+                'redirect' => 'view_account.php'
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Semua field wajib diisi'
+            ];
+        }
+
+        return $response;
+    }
+    
+    function update_user($user_nis, $user_name, $user_password){
+        include 'includes/db.php';
+
+        if($user_nis && $username != ''){
+            $password = $db->prepare("SELECT password FROM akun_users WHERE user_nis=?");
+            $password->bind_param("s" , $user_nis);
+            $password->execute();
+            $result = $password->get_result()->fetch_assoc();
+
+            if($user_password != ""){
+                $user_new_password = $user_password;
+            }else{
+                $user_new_password = $result["password"];
+            }
+
+            $stmt = $db->prepare("UPDATE akun_users SET username=? , password=? WHERE user_nis=?");
+            $stmt->bind_param("sss", $user_name, $user_new_password , $user_nis); 
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'User berhasil diubah',
+                'redirect' => 'view_account.php'
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Semua field wajib diisi'
+            ];
+        }
+
+        return $response;
+    }
+
+    function delete_user($user_nis){
+        include 'includes/db.php';
+
+        if($user_nis != ''){
+            $stmt = $db->prepare("DELETE FROM akun_users WHERE user_nis=?");
+            $stmt->bind_param("i",$user_nis);
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'User berhasil dihapus'
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'NIS User tidak ditemukan'
+            ];
+        }
+
+        return $response;
+    }
+
 ?>

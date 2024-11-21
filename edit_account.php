@@ -1,6 +1,24 @@
 <?php
 session_start();
+
+if (isset($_SESSION["is_login"]) == false) {
+    header("location: login.php");
+    exit();
+}
+
 include 'includes/db.php';
+include 'includes/functions.php';
+
+// Update data user tanpa hashing password
+if(isset($_POST['username'])){
+    $user_nis = isset($_POST['user_nis']) ? strip_tags($_POST['user_nis']) : '';
+    $user_name = isset($_POST['username']) ? strip_tags($_POST['username']) : '';
+    $user_password = isset($_POST['password']) ? strip_tags($_POST['password']) : '';
+
+    $update_user = update_user($user_nis, $user_name, $user_password);
+    echo json_encode($update_user);
+    exit();
+}
 
 // Ambil data user berdasarkan NIS
 if (isset($_GET['user_nis'])) {
@@ -22,18 +40,6 @@ if (isset($_GET['user_nis'])) {
     exit();
 }
 
-// Update data user tanpa hashing password
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = !empty($_POST['password']) ? $_POST['password'] : $user['password']; // Tidak melakukan hashing
-
-    $stmt = $db->prepare("UPDATE akun_users SET username = ?, password = ? WHERE user_nis = ?");
-    $stmt->bind_param("sss", $username, $password, $user_nis);
-    $stmt->execute();
-
-    header("Location: view_account.php");
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,16 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pondok Bahrul Ulum Quiz App - Edit Data Murid</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="css/user_style.css">
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-3">Edit Murid</h1>
         <div class="shadow px-3 py-4 rounded">
-            <form method="POST">
+            <form method="POST" action="edit_account.php" id="form_edit_user">
+                <input type="hidden" name="user_nis" value="<?= $user['user_nis'] ?>" required>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($user['username']) ?>" required>
+                    <input type="text" class="form-control" id="username" name="username" value="<?= $user['username'] ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password (Biarkan kosong jika tidak ingin diubah)</label>
@@ -63,5 +71,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#form_edit_user').submit(function(e){
+                e.preventDefault();
+                let form = $(this);
+                let url = form.attr('action');
+                let method = form.attr('method');
+                let data = new FormData(form[0]);
+                
+                $.ajax({
+                    url: url,
+                    type: method,
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    dataType: 'JSON',
+
+                    success: function(response){
+                        if(response.status == 'success'){
+                            toastr.success(response.message, 'Success !', {
+                                closeButton: true,
+                                progressBar: true,
+                                timeOut: 1500
+                            });
+                            
+                            setTimeout(function() {
+                                if (response.redirect != "") {
+                                    location.href = response.redirect;
+                                } else {
+                                    location.reload();
+                                }
+                            }, 1800);
+                        }else{
+                            toastr.error(response.message, 'Failed !', {
+                                closeButton: true,
+                                progressBar: true,
+                                timeOut: 1500
+                            });
+                        }
+                    },
+                });
+
+            });
+        });
+    </script>
+
 </body>
 </html>
