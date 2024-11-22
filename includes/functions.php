@@ -171,6 +171,28 @@
         return $response;
     }
 
+    function get_data_quiz($id_quiz){
+        include 'includes/db.php';
+
+        if ($id_quiz != '') {
+    
+            $stmt = $db->prepare("SELECT id_quiz, subject_id, title, status FROM quiz WHERE id_quiz=?");
+            $stmt->bind_param("i", $id_quiz);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_assoc();
+    
+            if (!$result) {
+                echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_quiz.php?id_subject=$result[subject_id]'</script>";
+                exit();
+            }
+        } else {
+            echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
+            exit();
+        }
+
+        return $result;
+    }
+
     function insert_quiz($subject_id, $judul_quiz){
         include 'includes/db.php';
 
@@ -326,6 +348,43 @@
                 'status' => 'error',
                 'message' => 'NIS User tidak ditemukan'
             ];
+        }
+
+        return $response;
+    }
+
+    function count_question_quiz($id_quiz){
+        include 'includes/db.php';
+
+        $stmt = $db->prepare("SELECT id_quiz FROM questions WHERE id_quiz=?");
+        $stmt->bind_param("i", $id_quiz);
+        $stmt->execute();
+
+        $result = $stmt->get_result()->num_rows;
+
+        return $result;
+    }
+
+    function get_question_for_quiz($id_quiz){
+        include 'includes/db.php';
+
+        $stmt = $db->prepare("SELECT id_question, image_soal, question_text, options FROM questions WHERE id_quiz=?");
+        $stmt->bind_param("i", $id_quiz);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $response[] = [
+                    'id_question' => $row['id_question'],
+                    'image_soal' => $row['image_soal'],
+                    'question_text' => $row['question_text'],
+                    'options' => json_decode($row['options'], true)
+                ];
+            }
+        }else{
+            header('location: quiz.php');
         }
 
         return $response;
