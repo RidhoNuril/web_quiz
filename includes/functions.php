@@ -306,6 +306,40 @@
         return $response;
     }
 
+    function insert_question($id_quiz, $question_text, $option_a, $option_b, $option_c, $option_d, $answer){
+        include 'includes/db.php';
+
+        if($id_quiz && $question_text && $option_a && $option_b && $option_c && $option_d && $answer != ''){
+            $option = [
+                "options" => [
+                  "a" => $option_a,
+                  "b" => $option_b,
+                  "c" => $option_c,
+                  "d" => $option_d,
+                ],
+                "answer" => $answer
+            ];
+            $options = json_encode($option, true);
+            $stmt = $db->prepare("INSERT INTO questions (id_quiz, question_text, options) VALUES (?, ?, ?)");
+            $stmt->bind_param("iss", $id_quiz, $question_text, $options); 
+            $stmt->execute();
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Berhasil menambah soal',
+                'redirect' => 'data_question.php?id_quiz='.$id_quiz.''
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'Semua field wajib diisi'
+            ];
+        }
+
+        return $response;
+    }
+
+
     function delete_question($id){
         include 'includes/db.php';
 

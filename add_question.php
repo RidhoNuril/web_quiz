@@ -8,15 +8,22 @@ if (isset($_SESSION["is_login"]) == false) {
 
 include 'includes/db.php'; // Pastikan path ke file db.php benar
 include 'includes/functions.php';
+$quiz_param = isset($_GET["id_quiz"]) ? $_GET["id_quiz"] : "";
 
-// if(isset($_POST['title'])){
-//     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';
-//     $judul_quiz = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
+if(isset($_POST['question_text'])){
+    $id_quiz = isset($_POST['id_quiz']) ? strip_tags($_POST['id_quiz']) : '';
+    $question_text = isset($_POST['question_text']) ? strip_tags($_POST['question_text']) : '';
+    $option_a = isset($_POST['option_a']) ? strip_tags($_POST['option_a']) : '';
+    $option_b = isset($_POST['option_b']) ? strip_tags($_POST['option_b']) : '';
+    $option_c = isset($_POST['option_c']) ? strip_tags($_POST['option_c']) : '';
+    $option_d = isset($_POST['option_d']) ? strip_tags($_POST['option_d']) : '';
+    $answer = isset($_POST['answer']) ? strip_tags($_POST['answer']) : '';
 
-//     $insert_quiz = insert_quiz($subject_id, $judul_quiz);
-//     echo json_encode($insert_quiz);
-//     exit();
-// }
+    $insert_question = insert_question($id_quiz, $question_text, $option_a, $option_b, $option_c, $option_d, $answer);
+    echo json_encode($insert_question);
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -34,10 +41,10 @@ include 'includes/functions.php';
     <div class="container mt-5">
         <h1 class="mb-3">Buat Soal</h1>
         <div class="shadow p-4 rounded">
-            <form action="add_question.php" method="POST" id="form_tambah_quiz">
+            <form action="add_question.php" method="POST" id="form_tambah_question">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="hidden" value="<?= $_GET['id_quiz'] ?>" name="id_quiz">
+                        <input type="hidden" value="<?= $quiz_param ?>" name="id_quiz">
                         <div class="mb-3">
                             <label for="summernote" class="form-label">Soal</label>
                             <textarea id="summernote" name="question_text" class="bg-white"></textarea>
@@ -72,7 +79,7 @@ include 'includes/functions.php';
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="answer" class="form-label">Jawaban yang benar</label>
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example" name="answer">
                                 <option disabled selected>Pilih jawaban yang benar</option>
                                 <option value="a">A</option>
                                 <option value="b">B</option>
@@ -99,7 +106,7 @@ include 'includes/functions.php';
                 height: 180
             });
             
-            $('#form_tambah_quiz').submit(function(e){
+            $('#form_tambah_question').submit(function(e){
                 e.preventDefault();
 
                 let form = $(this);
