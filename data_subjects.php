@@ -146,7 +146,7 @@
                             toastr.error(response.message, 'Failed !', {
                                 closeButton: true,
                                 progressBar: true,
-                                timeOut: 1500
+                                timeOut: 2500
                             });
                         }
                     },

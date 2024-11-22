@@ -12,6 +12,8 @@ include 'includes/functions.php';
 if(isset($_POST['question_text'])){
     $id_question = isset($_POST['id_question']) ? strip_tags($_POST['id_question']) : '';
     $id_quiz = isset($_POST['id_quiz']) ? strip_tags($_POST['id_quiz']) : '';
+    $image_soal = $_FILES['image_soal']['name'] != '' ? $_FILES['image_soal']['name'] : null;
+    $tmp_name = $_FILES['image_soal']['tmp_name'] != '' ? $_FILES['image_soal']['tmp_name'] : '';
     $question_text = isset($_POST['question_text']) ? $_POST['question_text'] : '';
     $option_a = isset($_POST['option_a']) ? strip_tags($_POST['option_a']) : '';
     $option_b = isset($_POST['option_b']) ? strip_tags($_POST['option_b']) : '';
@@ -19,7 +21,7 @@ if(isset($_POST['question_text'])){
     $option_d = isset($_POST['option_d']) ? strip_tags($_POST['option_d']) : '';
     $answer = isset($_POST['answer']) ? strip_tags($_POST['answer']) : '';
 
-    $update_question = update_question($id_question, $id_quiz, $question_text, $option_a, $option_b, $option_c, $option_d, $answer);
+    $update_question = update_question($id_question, $id_quiz, $image_soal, $tmp_name, $question_text, $option_a, $option_b, $option_c, $option_d, $answer);
     echo json_encode($update_question);
     exit();
 }
@@ -63,12 +65,22 @@ if (isset($_GET['id_question'])) {
         <div class="shadow p-4 rounded mb-4">
             <form action="edit_question.php" method="POST" id="form_edit_question">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <input type="hidden" value="<?= $question['id_question'] ?>" name="id_question">
                         <input type="hidden" value="<?= $question['id_quiz'] ?>" name="id_quiz">
                         <div class="mb-3">
                             <label for="summernote" class="form-label">Soal</label>
                             <textarea id="summernote" name="question_text" class="bg-white"><?= $question['question_text'] ?></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="image_soal" class="form-label">Gambar</label>
+                            <input type="file" id="image_soal" name="image_soal" class="form-control mb-3">
+                            <div class="img_soal text-center">
+                                <img src="assets/image_soal/<?= $question['image_soal'] != null ? $question['image_soal'] : 'default_thumbnail.png' ?>" alt="img-default" class="img-fluid rounded mb-2">
+                                <div class="text-center">Tambahkan gambar jika soal menggunakan gambar</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -124,7 +136,17 @@ if (isset($_GET['id_question'])) {
             $('#summernote').summernote({
                 placeholder: 'Isikan soal',
                 tabsize: 2,
-                height: 180
+                height: 295
+            });
+
+            $("#image_soal").change(function() {
+                let image = $(this).siblings('.img_soal').find('img');
+                let reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    image.attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
             });
             
             $('#form_edit_question').submit(function(e){

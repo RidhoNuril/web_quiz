@@ -89,7 +89,10 @@ if(isset($_GET['delete_id'])){
                                     </div>
                                 </div>
                                 <div class="card-body px-3">
-                                    <p><?= $row['question_text'] ?></p>
+                                    <?php if($row['image_soal'] != null){ ?>
+                                        <img src="assets/image_soal/<?= $row['image_soal'] ?>" alt="img_soal" class="img-fluid w-50 rounded mb-2">
+                                    <?php } ?>
+                                    <div><?= $row['question_text'] ?></div>
                                     <div class="row">
                                         <?php foreach($options['options'] as $key_opt => $text_opt){ ?>
                                             <div class="col-md-6">
@@ -114,12 +117,12 @@ if(isset($_GET['delete_id'])){
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Quiz</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Soal</h1>
                         <button type="button" class="btn_close_delete btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah anda yakin ingin menghapus quiz?
+                        Apakah anda yakin ingin menghapus soal?
                     </div>
                     <div class="modal-footer">
                         <form action="data_quiz.php" id="ajax-delete">
@@ -187,7 +190,7 @@ if(isset($_GET['delete_id'])){
                             toastr.error(response.message, 'Failed !', {
                                 closeButton: true,
                                 progressBar: true,
-                                timeOut: 1500
+                                timeOut: 2500
                             });
                         }
                     },

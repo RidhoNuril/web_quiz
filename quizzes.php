@@ -6,12 +6,12 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
     $subject_id = $_GET['subject_id'];
 
     // Ambil nama subjek untuk ditampilkan di halaman
-    $subject_query = "SELECT subject_name FROM subject WHERE subject_id = $subject_id";
+    $subject_query = "SELECT subject_name FROM subject WHERE subject_id=$subject_id";
     $subject_result = $db->query($subject_query);
     $subject_name = $subject_result->num_rows > 0 ? $subject_result->fetch_assoc()['subject_name'] : 'Unknown Subject';
 
     // Ambil daftar soal berdasarkan subject_id
-    $sql = "SELECT * FROM quiz WHERE subject_id = $subject_id";
+    $sql = "SELECT * FROM quiz WHERE subject_id = $subject_id AND status='publish'";
     $result = $db->query($sql);
 } else {
     die("Invalid subject ID.");

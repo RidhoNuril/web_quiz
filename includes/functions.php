@@ -131,24 +131,36 @@
         include 'includes/db.php';
 
         if($id != ''){
-            $subject = $db->prepare("SELECT thumbnail FROM subject WHERE subject_id=?");
-            $subject->bind_param("i",$id);
-            $subject->execute();
-            $result = $subject->get_result()->fetch_assoc();
+            $quiz = $db->prepare("SELECT subject_id FROM quiz WHERE subject_id=?");
+            $quiz->bind_param("i",$id);
+            $quiz->execute();
+            $quiz_result = $quiz->get_result();
 
-            if($result['thumbnail'] != 'default_thumbnail.png'){
-                $delete_file = "assets/image/$result[thumbnail]";
-                unlink($delete_file);
+            if($quiz_result->num_rows < 1){
+                $subject = $db->prepare("SELECT thumbnail FROM subject WHERE subject_id=?");
+                $subject->bind_param("i",$id);
+                $subject->execute();
+                $result = $subject->get_result()->fetch_assoc();
+
+                if($result['thumbnail'] != 'default_thumbnail.png'){
+                    $delete_file = "assets/image/$result[thumbnail]";
+                    unlink($delete_file);
+                }
+
+                $stmt = $db->prepare("DELETE FROM subject WHERE subject_id=?");
+                $stmt->bind_param("i",$id);
+                $stmt->execute();
+
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Subject berhasil dihapus'
+                ];
+            }else{
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Kosongkan quiz didalam subject terlebih dahulu'
+                ];
             }
-
-            $stmt = $db->prepare("DELETE FROM subject WHERE subject_id=?");
-            $stmt->bind_param("i",$id);
-            $stmt->execute();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'Subject berhasil dihapus'
-            ];
         }else{
             $response = [
                 'status' => 'error',
@@ -170,7 +182,7 @@
             $response = [
                 'status' => 'success',
                 'message' => 'Quiz berhasil dibuat',
-                'redirect' => 'data_quiz.php?id_quiz='.$subject_id.''
+                'redirect' => 'data_quiz.php?id_subject='.$subject_id.''
             ];
         }else{
             $response = [
@@ -182,12 +194,12 @@
         return $response;
     }
 
-    function update_quiz($id_quiz, $subject_id, $judul_quiz){
+    function update_quiz($id_quiz, $subject_id, $judul_quiz, $status){
         include 'includes/db.php';
 
         if($judul_quiz != ''){
-            $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=? WHERE id_quiz=?");
-            $stmt->bind_param("isi", $subject_id, $judul_quiz, $id_quiz);
+            $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=?, status=? WHERE id_quiz=?");
+            $stmt->bind_param("issi", $subject_id, $judul_quiz, $status, $id_quiz);
             $stmt->execute();
 
             $response = [
@@ -209,14 +221,27 @@
         include 'includes/db.php';
 
         if($id != ''){
-            $stmt = $db->prepare("DELETE FROM quiz WHERE id_quiz=?");
-            $stmt->bind_param("i",$id);
-            $stmt->execute();
+            $question = $db->prepare("SELECT id_quiz FROM questions WHERE id_quiz=?");
+            $question->bind_param("i",$id);
+            $question->execute();
+            $quest_result = $question->get_result();
+            
+            if($quest_result->num_rows < 1){
+                $stmt = $db->prepare("DELETE FROM quiz WHERE id_quiz=?");
+                $stmt->bind_param("i",$id);
+                $stmt->execute();
 
-            $response = [
-                'status' => 'success',
-                'message' => 'Quiz berhasil dihapus'
-            ];
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Quiz berhasil dihapus'
+                ];
+            }else{
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Kosongkan soal didalam quiz terlebih dahulu'
+                ];
+            }
+            
         }else{
             $response = [
                 'status' => 'error',
@@ -306,10 +331,19 @@
         return $response;
     }
 
-    function insert_question($id_quiz, $question_text, $option_a, $option_b, $option_c, $option_d, $answer){
+    function insert_question($id_quiz, $image_soal, $tmp_name, $question_text, $option_a, $option_b, $option_c, $option_d, $answer){
         include 'includes/db.php';
 
         if($question_text && $option_a && $option_b && $option_c && $option_d && $answer != ''){
+
+            if($image_soal != null){
+                $rand_image = rand().'-'.$image_soal;
+                $insert_dir = "assets/image_soal/$rand_image";
+                move_uploaded_file($tmp_name, $insert_dir);
+            }else{
+                $rand_image = null;
+            }
+
             $option = [
                 "options" => [
                   "a" => $option_a,
@@ -319,9 +353,10 @@
                 ],
                 "answer" => $answer
             ];
+            
             $options = json_encode($option, true);
-            $stmt = $db->prepare("INSERT INTO questions (id_quiz, question_text, options) VALUES (?, ?, ?)");
-            $stmt->bind_param("iss", $id_quiz, $question_text, $options); 
+            $stmt = $db->prepare("INSERT INTO questions (id_quiz, image_soal, question_text, options) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("isss", $id_quiz, $rand_image, $question_text, $options); 
             $stmt->execute();
 
             $response = [
@@ -339,10 +374,30 @@
         return $response;
     }
 
-    function update_question($id_question, $id_quiz, $question_text, $option_a, $option_b, $option_c, $option_d, $answer){
+    function update_question($id_question, $id_quiz, $image_soal, $tmp_name, $question_text, $option_a, $option_b, $option_c, $option_d, $answer){
         include 'includes/db.php';
 
         if($question_text && $option_a && $option_b && $option_c && $option_d && $answer != ''){
+
+            $image = $db->prepare("SELECT image_soal FROM questions WHERE id_question=?");
+            $image->bind_param("i", $id_question);
+            $image->execute();
+            $result = $image->get_result()->fetch_assoc();
+
+            if($image_soal != null){
+                if($result['image_soal'] != null){
+                    $delete_dir = "assets/image_soal/$result[image_soal]";
+                    unlink($delete_dir);
+                }
+
+                $rand_image = rand().'-'.$image_soal;
+                $update_dir = "assets/image_soal/$rand_image";
+                move_uploaded_file($tmp_name, $update_dir);
+
+            }else{
+                $rand_image = $result['image_soal'];
+            }
+
             $option = [
                 "options" => [
                   "a" => $option_a,
@@ -354,8 +409,8 @@
             ];
 
             $options = json_encode($option, true);
-            $stmt = $db->prepare("UPDATE questions SET id_quiz=?, question_text=?, options=? WHERE id_question=? ");
-            $stmt->bind_param("issi", $id_quiz, $question_text, $options, $id_question);
+            $stmt = $db->prepare("UPDATE questions SET id_quiz=?, image_soal=?, question_text=?, options=? WHERE id_question=? ");
+            $stmt->bind_param("isssi", $id_quiz, $rand_image, $question_text, $options, $id_question);
             $stmt->execute();
 
             $response = [
@@ -378,6 +433,16 @@
         include 'includes/db.php';
 
         if($id != ''){
+            $image = $db->prepare("SELECT image_soal FROM questions WHERE id_question=?");
+            $image->bind_param("i", $id);
+            $image->execute();
+            $result = $image->get_result()->fetch_assoc();
+
+            if($result['image_soal'] != null){
+                $delete_dir = "assets/image_soal/$result[image_soal]";
+                unlink($delete_dir);
+            }
+
             $stmt = $db->prepare("DELETE FROM questions WHERE id_question=?");
             $stmt->bind_param("i",$id);
             $stmt->execute();

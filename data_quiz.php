@@ -62,6 +62,7 @@
                         <tr>
                             <th>Judul</th>
                             <th>Dibuat</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -77,6 +78,7 @@
                             <tr>
                                 <td><?= $row['title'] ?></td>
                                 <td><?= $date_format ?></td>
+                                <td><span><?= $row['status'] ?></span></td>
                                 <td>
                                     <div class="d-flex">
                                         <a href='data_question.php?id_quiz=<?= $row['id_quiz'] ?>' class='btn btn-secondary btn-sm me-1'>Buat Soal</a>
@@ -167,7 +169,7 @@
                             toastr.error(response.message, 'Failed !', {
                                 closeButton: true,
                                 progressBar: true,
-                                timeOut: 1500
+                                timeOut: 2500
                             });
                         }
                     },

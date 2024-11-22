@@ -13,8 +13,9 @@ if(isset($_POST['title'])){
     $id_quiz = isset($_POST['id_quiz']) ? strip_tags($_POST['id_quiz']) : '';
     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';
     $judul_quiz = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
+    $status = isset($_POST['status']) ? strip_tags($_POST['status']) : '';
 
-    $update_quiz = update_quiz($id_quiz, $subject_id, $judul_quiz);
+    $update_quiz = update_quiz($id_quiz, $subject_id, $judul_quiz, $status);
     echo json_encode($update_quiz);
     exit();
 }
@@ -65,6 +66,13 @@ if (isset($_GET['id_quiz'])) {
                         <div class="mb-3">
                             <label for="title" class="form-label">Judul Quiz</label>
                             <input type="text" class="form-control" id="title" name="title" value="<?= $quiz['title'] ?>" placeholder="Masukkan judul quiz" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="private" <?= $quiz['status'] == 'private' ? 'selected' : '' ?>>Private</option>
+                                <option value="publish" <?= $quiz['status'] == 'publish' ? 'selected' : '' ?>>Publish</option>
+                            </select>
                         </div>
                     </div>
                 </div>
