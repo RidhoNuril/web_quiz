@@ -31,20 +31,8 @@ if(isset($_GET['delete_id'])){
 
 <body>
     <?php
-    if (isset($_GET['id_quiz']) && $_GET['id_quiz'] != '') {
-        $id_quiz = $_GET['id_quiz'];
-
-        $query = $db->query("SELECT id_quiz, subject_id, title FROM quiz WHERE id_quiz=$id_quiz");
-        $result = $query->fetch_assoc();
-
-        if (!$result) {
-            echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_quiz.php?id_subject=$result[subject_id]'</script>";
-            exit();
-        }
-    } else {
-        echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
-        exit();
-    }
+    $id_quiz = isset($_GET['id_quiz']) ? $_GET['id_quiz'] : '';
+    $result = get_data_quiz($id_quiz);
     ?>
     <div class="container mt-5">
         <!-- Tabel Data quiz -->

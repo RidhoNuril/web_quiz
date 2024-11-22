@@ -20,25 +20,8 @@ if(isset($_POST['title'])){
     exit();
 }
 
-if (isset($_GET['id_quiz'])) {
-    $quiz_id = $_GET['id_quiz'];
-
-    // Menggunakan MySQLi untuk query
-    $stmt = $db->prepare("SELECT * FROM quiz WHERE id_quiz = ?");
-    $stmt->bind_param("i", $quiz_id);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    $quiz = $result->fetch_assoc();
-
-    if (!$quiz) {
-        echo "<script>alert('Quiz tidak ditemukan!'); location.href='data_subjects.php'</script>";
-        exit();
-    }
-} else {
-    echo "id quiz tidak disertakan!";
-    exit();
-}
+    $id_quiz = isset($_GET['id_quiz']) ? $_GET['id_quiz'] : '';
+    $quiz = get_data_quiz($id_quiz);
 ?>
 
 <!DOCTYPE html>

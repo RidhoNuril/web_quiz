@@ -11,6 +11,11 @@
         header("location: index.php");
     }
     include 'includes/db.php';
+    include 'includes/functions.php';
+
+    if(isset($_SESSION['score']) && isset($_SESSION['question_index'])){
+        unset($_SESSION['score'], $_SESSION['question_index']);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,27 +42,26 @@
             <div class="col-md-9 p-3">
                 <div class="row g-4">
                     <?php
-                    $sql = "SELECT * FROM subject";
-                    $result = $db->query($sql);
-                    if ($result->num_rows > 0) {
-                        while ($subject = $result->fetch_assoc()) {
-                            echo "
-                            <div class='col-md-4'>
-                                <div class='card subject-card'>
-                                    <div class='card-body'>
-                                        <h5 class='card-title text-center'>{$subject['subject_name']}</h5>
-                                        <img src='./assets/image/{$subject['subject_name']}.png' alt='' class='img-fluid'>
-                                        <p class='card-text text-center'>Jelajahi dunia terkait {$subject['subject_desc']}! Temukan keajaiban dalam topik ini.</p>
-                                        <div class='text-center'>
-                                            <a href='quizzes.php?subject_id={$subject['subject_id']}' class='btn btn-primary start-btn w-100'>MULAI</a>
+                        $data_subject = get_all_data_subject();
+
+                        if ($data_subject != []) {
+                            foreach ($data_subject as $subject) { ?>
+                                <div class='col-md-6 col-lg-4'>
+                                    <div class='card subject-card'>
+                                        <div class='card-body'>
+                                            <h5 class='card-title text-center'><?= $subject['subject_name'] ?></h5>
+                                            <img src='assets/image/<?= $subject['thumbnail']?>' alt='' class='img-fluid rounded'>
+                                            <p class='card-text text-center pt-3'>Jelajahi dunia terkait <?= $subject['subject_desc'] ?>! Temukan keajaiban dalam topik ini.</p>
+                                            <div class='text-center'>
+                                                <a href='quizzes.php?subject_id=<?= $subject['subject_id']?>' class='btn btn-primary start-btn w-100'>MULAI</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>";
+                        <?php } 
+                        } else {
+                            echo "<li>No subjects available</li>";
                         }
-                    } else {
-                        echo "<li>No subjects available</li>";
-                    }
                     ?>
                 </div>
             </div>

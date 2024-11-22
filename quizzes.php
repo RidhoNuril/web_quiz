@@ -22,7 +22,7 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pondok Bahrul Ulum Quiz App - User Dashboard</title>
+    <title>Pondok Bahrul Ulum Quiz App - Quiz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/quizzes_style.css">
 </head>
@@ -50,7 +50,7 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
                     </li>
             <?php }
             } else {
-                echo "<li>Tidak ada soal untuk subjek ini.</li>";
+                echo "<li class='text-center'>Tidak ada soal untuk subjek ini.</li>";
             }
             ?>
         </ul>
