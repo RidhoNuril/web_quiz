@@ -18,8 +18,11 @@ if ($profile["role"] != "admin") {
 if(isset($_POST['title'])){
     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';
     $judul_quiz = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
+    $hour = isset($_POST['hour']) ? strip_tags($_POST['hour']) : '';
+    $min = isset($_POST['min']) ? strip_tags($_POST['min']) : '';
+    $sec = isset($_POST['sec']) ? strip_tags($_POST['sec']) : '';
 
-    $insert_quiz = insert_quiz($subject_id, $judul_quiz);
+    $insert_quiz = insert_quiz($subject_id, $judul_quiz, $hour, $min, $sec);
     echo json_encode($insert_quiz);
     exit();
 }
@@ -46,6 +49,14 @@ if(isset($_POST['title'])){
                         <div class="mb-3">
                             <label for="title" class="form-label">Judul Quiz</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Masukkan judul quiz" required>
+                        </div>
+                        <div class="mb-3">
+                        <label for="title" class="form-label">Waktu Quiz ( Contoh : 01:30:00 )</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="title" name="hour" placeholder="Jam" required>
+                                <input type="number" class="form-control" id="title" name="min" placeholder="Menit">
+                                <input type="number" class="form-control" id="title" name="sec" placeholder="Detik">
+                            </div>
                         </div>
                     </div>
                 </div>

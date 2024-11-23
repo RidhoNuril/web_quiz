@@ -122,7 +122,7 @@ if (isset($question[$_SESSION['question_index']])) {
                     <img src="assets/image_soal/<?= $current_question['image_soal'] ?>" alt="image_soal"
                         class="img-fluid border border-dark p-0 mb-3">
                 <?php } ?>
-                <div id="question"><?= $current_question['question_text'] ?></div>
+                <div id="question" class="lh-base"><?= $current_question['question_text'] ?></div>
                 <div class="choice">
                     <?php foreach ($current_question['options']['options'] as $key_opt => $value_opt) { ?>
                         <div class="choiceContainer my-3 d-flex border border-dark p-3"
@@ -134,7 +134,7 @@ if (isset($question[$_SESSION['question_index']])) {
                 </div>
             </div>
             <div class="progressBox col-md-2">
-                <div class="timeBar p-3 border border-dark fs-6 mb-3">Waktu <span id="timeBar">20</span></div>
+                <div class="timeBar p-3 border border-dark fs-6 mb-3">Waktu <span id="timeBar"><?= $data_quiz['quiz_time'] ?></span></div>
                 <div class="scoreBar p-3 border border-dark fs-6 mb-3">Nilai <span
                         id="scoreBar"><?= substr($_SESSION['score'], 0, 5) ?></span></div>
                 <div id="progressBar">
