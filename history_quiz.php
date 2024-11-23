@@ -29,6 +29,7 @@ include 'includes/functions.php';
         <div class="card mt-3 shadow-lg rounded mb-4">
             <h5 class="card-header p-3">
                 <div class="d-flex justify-content-between align-items-center">
+                <span>Riwayat Pengerjaan</span>
                     <a href="dashboard.php" class="btn btn-danger">Kembali</a>
                 </div>
             </h5>
@@ -37,7 +38,6 @@ include 'includes/functions.php';
                     <thead class="table-secondary">
                         <tr>
                             <th>No</th>
-                            <th>Mata Pelajaran</th>
                             <th>Nama Quiz</th>
                             <th>Score</th>
                             <th>Pengerjaan</th>
@@ -45,14 +45,12 @@ include 'includes/functions.php';
                     </thead>
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT * FROM quiz_score LEFT JOIN quiz ON quiz_score.id_quiz = quiz.id_quiz WHERE user_nis = ?");
+                        $stmt = $db->prepare("SELECT * FROM quiz_score LEFT JOIN quiz ON quiz_score.id_quiz = quiz.id_quiz WHERE user_nis=?");
                         $stmt->bind_param("s", $_SESSION['user_nis']);
                         $stmt->execute();
                         $result = $stmt->get_result();
-                        $subject_id = $result->fetch_assoc();
+
                         $no = 0;
-                        $subject = $db->query("SELECT subject_name FROM subject WHERE subject_id = $subject_id[subject_id]");
-                        $subject_name = $subject->fetch_assoc();
                         while ($row = $result->fetch_assoc()) {
                             $no++;
                             $date_create = date_create($row['completed_at']);
@@ -60,7 +58,6 @@ include 'includes/functions.php';
                         ?>
                             <tr>
                                 <td><?= $no ?></td>
-                                <td><?= $subject_name["subject_name"] ?></td>
                                 <td><?= $row['title'] ?></td>
                                 <td><?= $row['score'] ?></td>
                                 <td><?= $date_format ?></td>
