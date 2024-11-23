@@ -94,63 +94,36 @@ include 'includes/functions.php';
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#table').DataTable();
+        function startTimer() {
+            // Ambil waktu yang tersisa dari localStorage (atau 60 detik jika tidak ada)
+            var timeLeft = localStorage.getItem("timeLeft") ? parseInt(localStorage.getItem("timeLeft")) : 60;
 
-            $('.btn_delete').click(function() {
-                let quiz_id = $(this).data('quiz');
-                let row = $(this).closest('tr');
-                let form_delete = $('#ajax-delete');
+            // Tampilkan langsung waktu yang tersisa tanpa delay
+            $("#timer").text(timeLeft + " detik");
 
-                form_delete.attr('action', 'data_quiz.php?delete_id=' + quiz_id);
-                form_delete.data('row', row);
-            });
+            // Fungsi untuk menampilkan waktu mundur
+            var countdown = setInterval(function() {
+                // Kurangi 1 detik
+                timeLeft--; 
 
-            $('.btn_close_delete').click(function() {
-                let form_delete = $('#ajax-delete');
+                // Tampilkan waktu yang baru di elemen dengan id "timer"
+                $("#timer").text(timeLeft + " detik");
 
-                form_delete.attr('action', 'data_quiz.php');
-            });
+                // Simpan waktu yang tersisa di localStorage
+                localStorage.setItem("timeLeft", timeLeft);
 
-            $('#ajax-delete').submit(function(e) {
-                e.preventDefault();
+                // Jika waktu habis, tampilkan pesan
+                if (timeLeft <= 0) {
+                    clearInterval(countdown); // Hentikan countdown
+                    $("#timer").text("Waktu habis!"); // Tampilkan pesan "Waktu habis!"
+                }
+            }, 1000); // Update setiap detik
+        }
 
-                let form = $(this);
-                let url = form.attr('action');
-                let method = form.attr('method');
-                let row = form.data('row');
-
-                $.ajax({
-                    url: url,
-                    type: 'DELETE',
-                    dataType: 'JSON',
-                    beforeSend: function() {
-                        $('#confirm_delete').modal('hide');
-                    },
-                    success: function(response) {
-                        if (response.status == 'success') {
-                            row.remove();
-
-                            toastr.success(response.message, 'Success !', {
-                                closeButton: true,
-                                progressBar: true,
-                                timeOut: 1500
-                            });
-
-                        } else {
-                            toastr.error(response.message, 'Failed !', {
-                                closeButton: true,
-                                progressBar: true,
-                                timeOut: 2500
-                            });
-                        }
-                    },
-                });
-
-            });
-
-        });
-    </script>
+        // $(document).ready(function() {
+        //     startTimer(); // Mulai timer segera saat halaman dimuat
+        // });
+</script>
     <script src="app.js"></script>
 </body>
 
