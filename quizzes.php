@@ -52,7 +52,7 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
                     </li>
             <?php }
             } else {
-                echo "<li class='text-center'>Tidak ada soal untuk subjek ini.</li>";
+                echo "<li class='text-center'>Belum ada soal untuk subjek ini.</li>";
             }
             ?>
         </ul>

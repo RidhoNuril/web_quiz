@@ -9,20 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/quiz_style.css">
     <style>
-        @media only screen and (max-width: 800px) {
-            .container .backButton{
-                left: 35%;
-                top: 97%;
-            }
-        }
         @media only screen and (max-width: 768px) {
             .w-50{
                 width: 100% !important;
-            }
-            .container .backButton{
-                left: 40%;
-                top: 97%;
-                font-size: 1.25rem;
             }
         }
     </style>
@@ -48,7 +37,7 @@
         <div class="checkIcon fw-bold bg-aqua text-exercise">✓</div>
         <div class="row p-md-5 p-2 pt-5">
             <h1 class="text-center fw-bold pb-4 text-exercise">SKOR LATIHAN</h1>
-            <h1 class="fw-bold w-25 text-center mx-auto p-2 text-white bg-aqua" id="scoreResult"><?= substr($_SESSION['score'], 0, 5) ?></h1>
+            <h1 class="fw-bold text-center w-auto mx-auto py-2 px-3 text-white bg-aqua" id="scoreResult"><?= substr($_SESSION['score'], 0, 5) ?></h1>
             <p class="text-center fs-6 pt-5" id="message">
                 <?php 
                     if ($_SESSION['score'] >= 80) {

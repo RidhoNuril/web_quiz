@@ -44,7 +44,7 @@ if(isset($_POST['subject_name'])){
 <body>
     <div class="container mt-5">
         <h1 class="mb-3">Tambah Subject</h1>
-        <div class="shadow p-4 rounded">
+        <div class="shadow p-4 rounded mb-4">
             <form action="add_subject.php" method="POST" id="form_tambah_subject">
                 <div class="row">
                     <div class="col-md-8">
