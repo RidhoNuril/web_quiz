@@ -22,6 +22,7 @@
         
         if ($answer == $correct_answer['answer']) {
             $_SESSION['score'] += $point;
+            $_SESSION['question_index']++;
             
             $response = [
                 'status' => 'true',
@@ -30,6 +31,7 @@
                 'redirect' => ''
             ];
         } else {
+            $_SESSION['question_index']++;
             $response = [
                 'status' => 'false',
                 'score' => $_SESSION['score'],
@@ -37,22 +39,12 @@
                 'redirect' => ''
             ];
         }
-        if($_SESSION['question_index'] <= $count_question){
-            $_SESSION['question_index'] += 1;
-        }else{
-            $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score) VALUES (?, ?, ?)");
-            $score_user->bind_param("sii",$_SESSION['user_nis'], $result_answer['id_quiz'], $_SESSION['score']);
-            $score_user->execute();
-
-            $response['redirect'] = 'quiz_result.php';
-        }
         
         echo json_encode($response);
         exit();
     }
     ?>
 
-<!-- AGAMA ISLAM 01-->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -74,7 +66,15 @@
         $_SESSION['score'] = 0;
     }
     
-    $current_question = $question[$_SESSION['question_index']];
+    if(isset($question[$_SESSION['question_index']])){
+        $current_question = $question[$_SESSION['question_index']];
+    }else{
+        $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score) VALUES (?, ?, ?)");
+        $score_user->bind_param("sii",$_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
+        $score_user->execute();
+
+        header('location: quiz_result.php');
+    }
 ?>
 
 <body>
@@ -119,9 +119,10 @@
     <script>
         $(document).ready(function(){
             $('.choiceContainer').click(function(){
-                let answer_user = $(this).find('.choicePrefix').text();
-                let id_question = $(this).data('question');
-                let point = $(this).data('point');
+                let choice = $(this);
+                let answer_user = choice.find('.choicePrefix').text();
+                let id_question = choice.data('question');
+                let point = choice.data('point');
 
                 $.ajax({
                     type: 'POST',
@@ -134,14 +135,17 @@
                     dataType: 'JSON',
                     success: function(response){
                         if(response.status == 'true'){
-                            $(this).addClass('bg-primary');
+                            choice.addClass('bg-success');
                         } else {
-                            $(this).addClass('bg-danger');
+                            choice.addClass('bg-danger');
                         }
-                        location.reload();
-                        if(response.redirect != ''){
-                            location.href = response.redirect;
-                        }
+                        setTimeout(function(){
+                            if(response.redirect != ''){
+                                location.href = response.redirect;
+                            }else{
+                                location.reload();
+                            }
+                        },1000)
                     }
                 });
             });
