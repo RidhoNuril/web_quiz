@@ -93,38 +93,6 @@ include 'includes/functions.php';
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script>
-        function startTimer() {
-            // Ambil waktu yang tersisa dari localStorage (atau 60 detik jika tidak ada)
-            var timeLeft = localStorage.getItem("timeLeft") ? parseInt(localStorage.getItem("timeLeft")) : 60;
-
-            // Tampilkan langsung waktu yang tersisa tanpa delay
-            $("#timer").text(timeLeft + " detik");
-
-            // Fungsi untuk menampilkan waktu mundur
-            var countdown = setInterval(function() {
-                // Kurangi 1 detik
-                timeLeft--; 
-
-                // Tampilkan waktu yang baru di elemen dengan id "timer"
-                $("#timer").text(timeLeft + " detik");
-
-                // Simpan waktu yang tersisa di localStorage
-                localStorage.setItem("timeLeft", timeLeft);
-
-                // Jika waktu habis, tampilkan pesan
-                if (timeLeft <= 0) {
-                    clearInterval(countdown); // Hentikan countdown
-                    $("#timer").text("Waktu habis!"); // Tampilkan pesan "Waktu habis!"
-                }
-            }, 1000); // Update setiap detik
-        }
-
-        // $(document).ready(function() {
-        //     startTimer(); // Mulai timer segera saat halaman dimuat
-        // });
-</script>
-    <script src="app.js"></script>
 </body>
 
 </html>
