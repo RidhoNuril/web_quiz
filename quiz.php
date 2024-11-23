@@ -77,7 +77,7 @@
         $score_user->bind_param("sii",$_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
         $score_user->execute();
 
-        header('location: quiz_result.php');
+        header('location: quiz_result.php?id_quiz='.$id_quiz.'');
     }
 ?>
 
@@ -95,7 +95,7 @@
                 <p><span id="number"><?= $_SESSION['question_index'] + 1 ?></span>/<?= $count_question ?></p>
             </div>
             <div class="questionBox col-md-9 pt-md-0 py-3 px-5">
-                <div class="fw-bold mb-3">Baca Soal Dengan Seksama<?php print_r($_SESSION ) ?></div>
+                <div class="fw-bold mb-3">Baca Soal Dengan Seksama</div>
                 <?php if($current_question['image_soal'] != null){ ?>
                     <img src="assets/image_soal/<?= $current_question['image_soal'] ?>" alt="image_soal" class="img-fluid border border-dark p-0 mb-3">
                 <?php } ?>

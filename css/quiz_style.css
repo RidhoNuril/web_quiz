@@ -91,19 +91,21 @@ body{
     position: absolute;
     text-decoration: none;
     border-radius: 40px;
-    top: 95%;
-    left: 43%;
+    transform: translateX(-50%);
+    bottom: -27px;
+    left: 50%;
     transition: all 0.3s ease;
+    transform-origin: left;
 }
 .container .backButton:hover{
     background-color: #0d8b9e;
-    transform: scale(1.1);
+    transform: scale(1.1) translateX(-50%);
 }
 .container .row #scoreResult {
     transition: all 0.3s ease;
 }
 .container .row #scoreResult:hover{
-    transform: scale(2);
+    transform: scale(1.2);
 }
 @media only screen and (max-width: 768px) {
     .container .row .numberBox {
