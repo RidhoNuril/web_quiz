@@ -87,7 +87,7 @@ if(isset($_GET['delete_id'])){
                                     <?php if($row['image_soal'] != null){ ?>
                                         <img src="assets/image_soal/<?= $row['image_soal'] ?>" alt="img_soal" class="img-fluid w-50 rounded mb-2">
                                     <?php } ?>
-                                    <div><?= $row['question_text'] ?></div>
+                                    <div class="mb-2"><?= $row['question_text'] ?></div>
                                     <div class="row">
                                         <?php foreach($options['options'] as $key_opt => $text_opt){ ?>
                                             <div class="col-md-6">
