@@ -20,9 +20,7 @@ if (isset($_POST['login'])) {
         if ($resultUser->num_rows > 0) {
             // Jika ditemukan di tabel user
             $dataUser = $resultUser->fetch_assoc();
-            $_SESSION["username"] = $dataUser['username'];
             $_SESSION["user_nis"] = $dataUser['user_nis'];
-            $_SESSION["role"] = $dataUser['role'];
             $_SESSION["is_login"] = true;
             header("location: dashboard.php");
             exit();

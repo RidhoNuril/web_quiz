@@ -5,14 +5,16 @@
         header("location: login.php");
         exit();
     }
-    if ($_SESSION["role"] != "admin") {
-        header("location: dashboard.php");
-        exit();
-    }
     
     include 'includes/functions.php';
     include 'includes/db.php';
     
+    $profile = profile_user($_SESSION["user_nis"]);
+    if ($profile["role"] != "admin") {
+        header("location: dashboard.php");
+        exit();
+    }
+
     if(isset($_GET['delete_id'])){
         $delete_subject = delete_subject($_GET['delete_id']);
         echo json_encode($delete_subject);

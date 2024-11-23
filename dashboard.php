@@ -6,6 +6,8 @@
         header("location: index.php");
     }
     include 'includes/functions.php';
+    $profile = profile_user($_SESSION["user_nis"]);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,12 +31,11 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-             
             <div class="col-md-3 text-center border-end">
                 <img src="./assets/image/img-icon.png" alt="Logo" class="img-fluid rounded-circle mt-3"
                     style="width: 150px;">
-                <h4 class="mt-3"><?= $_SESSION["username"]?></h4>
-                <?php if($_SESSION["role"] == "admin"){?>
+                <h4 class="mt-3"><?= $profile["username"]?></h4>
+                <?php if($profile["role"] == "admin"){?>
                     <a href="view_account.php" class="button-mulai mt-3">Data Murid</a>
                     <a href="add_users.php" class="button-mulai mt-3">Buat Data Murid</a>
                     <a href="data_subjects.php" class="button-mulai mt-3">Data Subject</a>

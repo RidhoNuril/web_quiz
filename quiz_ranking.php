@@ -5,13 +5,15 @@
         header("location: login.php");
         exit();
     }
-    if ($_SESSION["role"] != "admin") {
-        header("location: dashboard.php");
-        exit();
-    }
     
     include 'includes/db.php';
     include 'includes/functions.php';
+    $profile = profile_user($_SESSION["user_nis"]);
+    if ($profile["role"] != "admin") {
+        header("location: dashboard.php");
+        exit();
+    }
+
     
 ?>
 <!DOCTYPE html>

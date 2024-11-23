@@ -5,13 +5,15 @@ if (isset($_SESSION["is_login"]) == false) {
     header("location: login.php");
     exit();
 }
-if ($_SESSION["role"] != "admin") {
+include 'includes/db.php'; // Pastikan path ke file db.php benar
+include 'includes/functions.php';
+
+$profile = profile_user($_SESSION["user_nis"]);
+if ($profile["role"] != "admin") {
     header("location: dashboard.php");
     exit();
 }
 
-include 'includes/db.php'; // Pastikan path ke file db.php benar
-include 'includes/functions.php';
 
 if(isset($_POST['title'])){
     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';

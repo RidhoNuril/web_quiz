@@ -12,6 +12,15 @@
         return $response;
     }
 
+    function profile_user($user_nis){
+        include 'db.php';
+        $stmt = $db->prepare("SELECT user_nis, username, role FROM akun_users WHERE user_nis=?");
+        $stmt->bind_param("s",$user_nis);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        return $result;
+    }
 
     function get_all_data_subject(){
         include 'db.php';
@@ -191,6 +200,18 @@
         }
 
         return $result;
+    }
+
+    function quiz_status($user_nis, $id_quiz){
+        include "db.php";
+        $stmt = $db->prepare("SELECT user_nis, id_quiz FROM quiz_score WHERE user_nis=? AND id_quiz=?");
+        $stmt->bind_param("si",$user_nis, $id_quiz);
+        $stmt->execute();
+        // Jumlah user per quiz
+        $response = $stmt->get_result()->num_rows;
+
+        return $response;
+
     }
 
     function insert_quiz($subject_id, $judul_quiz){

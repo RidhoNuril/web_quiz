@@ -5,13 +5,16 @@ if (isset($_SESSION["is_login"]) == false) {
     header("location: login.php");
     exit();
 }
-if ($_SESSION["role"] != "admin") {
+
+include 'includes/db.php';
+include 'includes/functions.php';
+
+$profile = profile_user($_SESSION["user_nis"]);
+if ($profile["role"] != "admin") {
     header("location: dashboard.php");
     exit();
 }
 
-include 'includes/db.php';
-include 'includes/functions.php';
 
 if(isset($_GET['delete_id'])){
     $delete_question = delete_question($_GET['delete_id']);

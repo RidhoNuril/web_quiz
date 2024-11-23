@@ -6,6 +6,7 @@ if (isset($_SESSION["is_login"]) == false) {
 }
 
 include 'includes/db.php';
+include 'includes/functions.php';
 
 if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
     $subject_id = $_GET['subject_id'];
@@ -42,8 +43,12 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
                 while ($quiz = $result->fetch_assoc()) { ?>
                     <li class='exercise-item'>
                         <div class='exercise-name'><?= $quiz['title']?></div>
-                        <div class='date'><?= $quiz['created_at'] ?></div>
-                        <div class='link'><a href='quiz.php?id_quiz=<?= $quiz['id_quiz'] ?>' class='btn btn-outline-primary'>Kerjakan</a></div>
+                        <div class='date d-flex'><?= $quiz['created_at'] ?></div>
+                        <?php if(quiz_status($_SESSION["user_nis"] , $quiz["id_quiz"]) < 1){?>
+                            <div class='link'><a href='quiz.php?id_quiz=<?= $quiz['id_quiz'] ?>' class='btn btn-outline-primary'>Kerjakan</a></div>
+                        <?php }else{ ?>
+                            <div class="btn btn-sm btn-success">Selesai</div>
+                        <?php } ?>
                     </li>
             <?php }
             } else {

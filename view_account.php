@@ -9,6 +9,12 @@ if (isset($_SESSION["is_login"]) == false) {
 include 'includes/db.php';
 include 'includes/functions.php';
 
+$profile = profile_user($_SESSION["user_nis"]);
+if ($profile["role"] != "admin") {
+    header("location: dashboard.php");
+    exit();
+}
+
 if(isset($_GET['delete_id'])){
     $delete_user = delete_user($_GET['delete_id']);
     echo json_encode($delete_user);

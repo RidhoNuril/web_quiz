@@ -11,6 +11,11 @@
     $id_quiz = isset($_GET['id_quiz']) ? $_GET['id_quiz'] : '';
     $count_question = count_question_quiz($id_quiz);
     
+    if(quiz_status($_SESSION["user_nis"] , $id_quiz) > 0){
+        header("location: dashboard.php");
+    }
+
+
     if (isset($_POST['answer'])) {
         $answer = $_POST['answer'];
         $question = $_POST['id_question'];
