@@ -29,6 +29,11 @@
 </head>
 <?php
     session_start();
+    if (isset($_SESSION["is_login"]) == false) {
+        header("location: login.php");
+        exit();
+    }
+    
 ?>
 <body>
     <header>
@@ -41,10 +46,10 @@
         <div class="checkIcon fw-bold bg-aqua text-exercise">✓</div>
         <div class="row p-md-5 p-2 pt-5">
             <h1 class="text-center fw-bold pb-4 text-exercise">SKOR LATIHAN</h1>
-            <h1 class="fw-bold w-25 text-center mx-auto p-2 text-white bg-aqua" id="scoreResult"><?= $_SESSION['score'] ?></h1>
+            <h1 class="fw-bold w-25 text-center mx-auto p-2 text-white bg-aqua" id="scoreResult"><?= substr($_SESSION['score'], 0, 5) ?></h1>
             <p class="text-center fs-6 pt-5" id="message"></p>
         </div>
-        <a class="backButton p-1 fw-bold bg-aqua text-white" href="users_dashboard.php">KEMBALI</a>
+        <a class="backButton p-1 fw-bold bg-aqua text-white" href="dashboard.php">KEMBALI</a>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>

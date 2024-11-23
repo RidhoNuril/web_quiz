@@ -22,18 +22,24 @@
             header("location: login.php");
             exit();
         }
+        if (isset($_SESSION["score"]) && isset($_SESSION["question_index"])) {
+            unset($_SESSION["score"], $_SESSION["question_index"]);
+        }
     ?>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
+             
             <div class="col-md-3 text-center border-end">
                 <img src="./assets/image/img-icon.png" alt="Logo" class="img-fluid rounded-circle mt-3"
                     style="width: 150px;">
                 <h4 class="mt-3"><?= $_SESSION["username"]?></h4>
-                <a href="view_account.php" class="button-mulai mt-3">Data Murid</a>
-                <a href="add_users.php" class="button-mulai mt-3">Buat Data Murid</a>
-                <a href="data_subjects.php" class="button-mulai mt-3">Data Subject</a>
-                <form action="users_dashboard.php" method="POST">
+                <?php if($_SESSION["role"] == "admin"){?>
+                    <a href="view_account.php" class="button-mulai mt-3">Data Murid</a>
+                    <a href="add_users.php" class="button-mulai mt-3">Buat Data Murid</a>
+                    <a href="data_subjects.php" class="button-mulai mt-3">Data Subject</a>
+                <?php } ?>
+                <form action="dashboard.php" method="POST">
                     <button type="submit" name="logout" class="button-mulai bg-danger mt-3">Logout</button>
                 </form>
             </div>

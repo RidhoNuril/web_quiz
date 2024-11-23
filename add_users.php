@@ -6,6 +6,10 @@ if (isset($_SESSION["is_login"]) == false) {
     header("location: login.php");
     exit();
 }
+if ($_SESSION["role"] != "admin") {
+    header("location: dashboard.php");
+    exit();
+}
 
 if(isset($_POST['username'])){
     $user_nis = isset($_POST['user_nis']) ? strip_tags($_POST['user_nis']) : '';
@@ -58,7 +62,7 @@ if(isset($_POST['username'])){
                     </p>
                     <button type="submit" name="buat" class="btn btn-danger w-100 py-2 mb-4">Tambah</button>
                 </form>
-                <a href="admin_dashboard.php" class="btn btn-danger w-75 py-2">Kembali</a>
+                <a href="dashboard.php" class="btn btn-danger w-75 py-2">Kembali</a>
             </div>
         </div>
     </div>

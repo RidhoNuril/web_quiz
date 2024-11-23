@@ -1,9 +1,13 @@
 <?php 
     session_start();
+    if (isset($_SESSION["is_login"]) == false) {
+        header("location: login.php");
+        exit();
+    }
+
     include 'includes/db.php';
     include 'includes/functions.php';
-
-    
+  
     $id_quiz = isset($_GET['id_quiz']) ? $_GET['id_quiz'] : '';
     $count_question = count_question_quiz($id_quiz);
     
@@ -107,7 +111,7 @@
             </div>
             <div class="progressBox col-md-2">
                 <div class="timeBar p-3 border border-dark fs-6 mb-3">Waktu <span id="timeBar"></span></div>
-                <div class="scoreBar p-3 border border-dark fs-6 mb-3">Nilai <span id="scoreBar"><?= $_SESSION['score'] ?></span></div>
+                <div class="scoreBar p-3 border border-dark fs-6 mb-3">Nilai <span id="scoreBar"><?= substr($_SESSION['score'], 0, 5) ?></span></div>
                 <div id="progressBar"><div id="progressBarFull"></div></div>
                 <audio controls loop autoplay style="width: 100%; transform: scale(0.9);" class="pt-3">
                     <source src="../../Assets/BGSPAI.mp3">

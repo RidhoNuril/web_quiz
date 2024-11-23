@@ -38,7 +38,7 @@ if(isset($_GET['delete_id'])){
                 <div class="d-flex justify-content-between align-items-center">
                     <span>Data Murid</span>
                     <div class="d-flex">
-                        <a href="admin_dashboard.php" class="btn btn-danger">Kembali</a>
+                        <a href="dashboard.php" class="btn btn-danger">Kembali</a>
                     </div>
 
                 </div>

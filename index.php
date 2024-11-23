@@ -12,13 +12,7 @@
         session_start();
         
         if (isset($_SESSION["is_login"])) {
-            if ($_SESSION["username"] == "admin") {
-                header("location: admin_dashboard.php");
-                exit();
-            } else{
-                header("location: users_dashboard.php");
-                exit();
-            }
+            header("location: dashboard.php");
         }
     ?>
     <main>

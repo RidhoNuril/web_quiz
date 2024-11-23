@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (isset($_SESSION["is_login"]) == false) {
+    header("location: login.php");
+    exit();
+}
+
 include 'includes/db.php';
 
 if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
@@ -29,15 +34,7 @@ if (isset($_GET['subject_id']) && is_numeric($_GET['subject_id'])) {
 <body>
     <div class="title"><?= htmlspecialchars($subject_name) ?></div>
     <div class="line"></div>
-    <?= 
-        $keterangan = "";
-        if(($_SESSION["username"]) == "admin"){
-            $keterangan = "admin_dashboard.php";
-        } else{
-            $keterangan = "users_dashboard.php";
-        }
-    ?>
-    <a href=<?= $keterangan ?> class="button-mulai w-25 my-1">Kembali</a>
+    <a href="dashboard.php" class="button-mulai w-25 my-1">Kembali</a>
     <div class="container">
         <ul class="exercise-list">
             <?php

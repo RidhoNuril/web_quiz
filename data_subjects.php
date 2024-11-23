@@ -5,6 +5,10 @@
         header("location: login.php");
         exit();
     }
+    if ($_SESSION["role"] != "admin") {
+        header("location: dashboard.php");
+        exit();
+    }
     
     include 'includes/functions.php';
     include 'includes/db.php';
@@ -37,7 +41,7 @@
                     <span>Data Subject</span>
                     <div class="d-flex">
                         <a href="add_subject.php" class="btn btn-primary me-2">Tambah</a>
-                        <a href="admin_dashboard.php" class="btn btn-danger">Kembali</a>
+                        <a href="dashboard.php" class="btn btn-danger">Kembali</a>
                     </div>
                 </div>
             </h5>

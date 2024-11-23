@@ -5,6 +5,10 @@ if (isset($_SESSION["is_login"]) == false) {
     header("location: login.php");
     exit();
 }
+if ($_SESSION["role"] != "admin") {
+    header("location: dashboard.php");
+    exit();
+}
 
 include 'includes/db.php';
 include 'includes/functions.php';

@@ -3,13 +3,8 @@ include "includes/db.php";
 session_start();
 
 if (isset($_SESSION["is_login"])) {
-    if ($_SESSION["username"] == "admin") {
-        header("location: admin_dashboard.php");
-        exit();
-    } else{
-        header("location: users_dashboard.php");
-        exit();
-    }
+    header("location: dashboard.php");
+    exit();
 }
 
 if (isset($_POST['login'])) {
@@ -18,19 +13,6 @@ if (isset($_POST['login'])) {
 
     // Variabel untuk notifikasi
     $notification = "";
-
-    // Cek apakah username ada di tabel admin
-    $sqlAdmin = "SELECT * FROM akun_admins WHERE username = '$username' AND password = '$password'";
-    $resultAdmin = $db->query($sqlAdmin);
-
-    if ($resultAdmin->num_rows > 0) {
-        // Jika ditemukan di tabel admin
-        $dataAdmin = $resultAdmin->fetch_assoc();
-        $_SESSION["username"] = $dataAdmin['username'];
-        $_SESSION["is_login"] = true;
-        header("location: admin_dashboard.php");
-        exit();
-    } else {
         // Jika tidak ditemukan di tabel admin, cek tabel user
         $sqlUser = "SELECT * FROM akun_users WHERE username = '$username' AND password = '$password'";
         $resultUser = $db->query($sqlUser);
@@ -40,14 +22,14 @@ if (isset($_POST['login'])) {
             $dataUser = $resultUser->fetch_assoc();
             $_SESSION["username"] = $dataUser['username'];
             $_SESSION["user_nis"] = $dataUser['user_nis'];
+            $_SESSION["role"] = $dataUser['role'];
             $_SESSION["is_login"] = true;
-            header("location: users_dashboard.php");
+            header("location: dashboard.php");
             exit();
         } else {
             // Jika tidak ditemukan di kedua tabel
             $notification = "Akun tidak ditemukan";
         }
-    }
     $db->close();
 }
 ?>
