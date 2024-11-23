@@ -40,6 +40,7 @@
                     <a href="add_users.php" class="button-mulai mt-3">Buat Data Murid</a>
                     <a href="data_subjects.php" class="button-mulai mt-3">Data Subject</a>
                 <?php } ?>
+                <a href="history_quiz.php" class="button-mulai mt-3">Riwayat</a>
                 <form action="dashboard.php" method="POST">
                     <button type="submit" name="logout" class="button-mulai bg-danger mt-3">Logout</button>
                 </form>
