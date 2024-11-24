@@ -49,7 +49,7 @@ if (isset($_POST['answer'])) {
         $score_user->bind_param("sii", $_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
         $score_user->execute();
 
-        echo json_encode(['redirect' => 'quiz_result.php?id_quiz=' . $id_quiz . '', 'status' => $status]);
+        echo json_encode(['redirect' => 'quiz_result.php?id_quiz=' . $id_quiz . '','score'=> $_SESSION['score'], 'status' => $status]);
         exit();
     }
 
@@ -246,24 +246,28 @@ if (isset($question[$_SESSION['question_index']])) {
                         }
 
                         setTimeout(function () {
+
                             if (response.redirect != '') {
-                                location.href = response.redirect;
+                                $('#scoreBar').text(parseFloat(response.score.toFixed(2)));
+                                setTimeout(function(){
+                                    location.href = response.redirect;
+                                },400);
+
+                            }else{
+                                $('#question').text(response.question_text);
+                                $('#scoreBar').text(parseFloat(response.score.toFixed(2)));
+                                $('#number').text(response.number + 1);
+
+                                $('.choice').empty();
+
+                                let options =response.options.options;
+
+                                Object.entries(options).forEach(function([key, value]) {
+                                    $('.choice')
+                                    .append('<div class="choiceContainer my-3 d-flex border border-dark p-3" data-question="'+ response.id_question +'" data-quiz="<?= $id_quiz ?>" data-point="<?= $point ?>"><div class="choicePrefix">'+ key +'</div><div class="choiceText mx-3 w-100 d-flex align-items-center">'+ value +'</div></div>');
+                                });
                             }
-
-                            $('#question').text(response.question_text);
-                            $('#scoreBar').text(parseFloat(response.score.toFixed(2)));
-                            $('#number').text(response.number + 1);
-
-                            $('.choice').empty();
-
-                            let options =response.options.options;
-
-                            Object.entries(options).forEach(function([key, value]) {
-                                $('.choice')
-                                .append('<div class="choiceContainer my-3 d-flex border border-dark p-3" data-question="'+ response.id_question +'" data-quiz="<?= $id_quiz ?>" data-point="<?= $point ?>"><div class="choicePrefix">'+ key +'</div><div class="choiceText mx-3 w-100 d-flex align-items-center">'+ value +'</div></div>');
-                            });
-
-                        }, 400);
+                        }, 600);
 
                     }
                 });
