@@ -254,7 +254,7 @@ if (isset($question[$_SESSION['question_index']])) {
                                 },400);
 
                             }else{
-                                $('#question').text(response.question_text);
+                                $('#question').empty().append(response.question_text);
                                 $('#scoreBar').text(parseFloat(response.score.toFixed(2)));
                                 $('#number').text(response.number + 1);
 
