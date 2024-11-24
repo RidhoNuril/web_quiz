@@ -21,6 +21,9 @@ if(isset($_POST['title'])){
     $subject_id = isset($_POST['subject_id']) ? strip_tags($_POST['subject_id']) : '';
     $judul_quiz = isset($_POST['title']) ? strip_tags($_POST['title']) : '';
     $status = isset($_POST['status']) ? strip_tags($_POST['status']) : '';
+    $hour = isset($_POST['hour']) ? strip_tags($_POST['hour']) : '';
+    $min = isset($_POST['min']) ? strip_tags($_POST['min']) : '';
+    $status = isset($_POST['sec']) ? strip_tags($_POST['sec']) : '';
 
     $update_quiz = update_quiz($id_quiz, $subject_id, $judul_quiz, $status);
     echo json_encode($update_quiz);
@@ -29,6 +32,9 @@ if(isset($_POST['title'])){
 
     $id_quiz = isset($_GET['id_quiz']) ? $_GET['id_quiz'] : '';
     $quiz = get_data_quiz($id_quiz);
+    $hour = $quiz["quiz_time"] / 3600;
+    $min = ($quiz["quiz_time"] % 3600) / 60;
+    $sec = $quiz["quiz_time"] % 60;
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +69,13 @@ if(isset($_POST['title'])){
                                 <option value="private" <?= $quiz['status'] == 'private' ? 'selected' : '' ?>>Private</option>
                                 <option value="publish" <?= $quiz['status'] == 'publish' ? 'selected' : '' ?>>Publish</option>
                             </select>
+                        </div>
+                        <label for="title" class="form-label">Waktu Quiz ( Contoh : 01:30:00 )</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="title" name="hour" value="<?= floor( $hour) ?>" placeholder="Jam">
+                                <input type="number" class="form-control" id="title" name="min" value="<?= floor($min) ?>" placeholder="Menit">
+                                <input type="number" class="form-control" id="title" name="sec" value="<?= $sec ?>" placeholder="Detik">
+                            </div>
                         </div>
                     </div>
                 </div>

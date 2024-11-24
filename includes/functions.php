@@ -252,9 +252,15 @@ function update_quiz($id_quiz, $subject_id, $judul_quiz, $status)
 {
     include 'includes/db.php';
 
+    $hour = isset($_POST['hour']) ? intval($_POST['hour']) : 0;
+    $min = isset($_POST['min']) ? intval($_POST['min']) : 0;
+    $sec = isset($_POST['sec']) ? intval($_POST['sec']) : 0;
+
+    $time = ($hour * 3600) + ($min * 60) + $sec;
+
     if ($judul_quiz != '') {
-        $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=?, status=? WHERE id_quiz=?");
-        $stmt->bind_param("issi", $subject_id, $judul_quiz, $status, $id_quiz);
+        $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=?, quiz_time=?, status=? WHERE id_quiz=?");
+        $stmt->bind_param("isisi", $subject_id, $judul_quiz, $time, $status, $id_quiz);
         $stmt->execute();
 
         $response = [

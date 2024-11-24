@@ -53,7 +53,7 @@ if(isset($_POST['title'])){
                         <div class="mb-3">
                         <label for="title" class="form-label">Waktu Quiz ( Contoh : 01:30:00 )</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="title" name="hour" placeholder="Jam" required>
+                                <input type="number" class="form-control" id="title" name="hour" placeholder="Jam">
                                 <input type="number" class="form-control" id="title" name="min" placeholder="Menit">
                                 <input type="number" class="form-control" id="title" name="sec" placeholder="Detik">
                             </div>
