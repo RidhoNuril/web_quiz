@@ -28,10 +28,11 @@ if (isset($_POST['answer'])) {
     $result_answer = $result->fetch_assoc();
 
     $correct_answer = json_decode($result_answer['options'], true);
-
+    
+    $_SESSION['question_index']++;
+    
     if ($answer == $correct_answer['answer']) {
         $_SESSION['score'] += $point;
-        $_SESSION['question_index']++;
 
         $response = [
             'status' => 'true',
@@ -40,7 +41,6 @@ if (isset($_POST['answer'])) {
             'redirect' => ''
         ];
     } else {
-        $_SESSION['question_index']++;
         $response = [
             'status' => 'false',
             'score' => $_SESSION['score'],
