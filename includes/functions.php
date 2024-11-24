@@ -222,11 +222,11 @@ function insert_quiz($subject_id, $judul_quiz, $hour, $min, $sec)
 {
     include 'includes/db.php';
 
-    $hour = isset($_POST['hour']) ? intval($_POST['hour']) : 0;
-    $min = isset($_POST['min']) ? intval($_POST['min']) : 0;
-    $sec = isset($_POST['sec']) ? intval($_POST['sec']) : 0;
+    $hours = isset($hour) ? intval($hour) : 0;
+    $mins = isset($min) ? intval($min) : 0;
+    $secs = isset($sec) ? intval($sec) : 0;
 
-    $time = ($hour * 3600) + ($min * 60) + $sec;
+    $time = ($hours * 3600) + ($mins * 60) + $secs;
 
     if ($judul_quiz != '') {
         $stmt = $db->prepare("INSERT INTO quiz (subject_id, title, quiz_time) VALUES (?, ?, ?)");
@@ -248,15 +248,15 @@ function insert_quiz($subject_id, $judul_quiz, $hour, $min, $sec)
     return $response;
 }
 
-function update_quiz($id_quiz, $subject_id, $judul_quiz, $status)
+function update_quiz($id_quiz, $subject_id, $judul_quiz, $hour, $min, $sec, $status)
 {
     include 'includes/db.php';
 
-    $hour = isset($_POST['hour']) ? intval($_POST['hour']) : 0;
-    $min = isset($_POST['min']) ? intval($_POST['min']) : 0;
-    $sec = isset($_POST['sec']) ? intval($_POST['sec']) : 0;
+    $hours = isset($hour) ? intval($hour) : 0;
+    $mins = isset($min) ? intval($min) : 0;
+    $secs = isset($sec) ? intval($sec) : 0;
 
-    $time = ($hour * 3600) + ($min * 60) + $sec;
+    $time = ($hours * 3600) + ($mins * 60) + $secs;
 
     if ($judul_quiz != '') {
         $stmt = $db->prepare("UPDATE quiz SET subject_id=?, title=?, quiz_time=?, status=? WHERE id_quiz=?");
