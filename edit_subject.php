@@ -31,25 +31,9 @@ if(isset($_POST['subject_name'])){
 }
 
 
-// Ambil data subject berdasarkan id subject
-if (isset($_GET['id_subject'])) {
-    $subject_id = $_GET['id_subject'];
+$id_subject = isset($_GET['id_subject']) ? $_GET['id_subject'] : '';
 
-    $stmt = $db->prepare("SELECT * FROM subject WHERE subject_id = ?");
-    $stmt->bind_param("i", $subject_id);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    $subject = $result->fetch_assoc();
-
-    if (!$subject) {
-        echo "<script>alert('Subject tidak ditemukan!'); location.href='subject.php'</script>";
-        exit();
-    }
-} else {
-    echo "id subject tidak disertakan!";
-    exit();
-}
+$subject = get_single_subject($id_subject);
 
 ?>
 <!DOCTYPE html>

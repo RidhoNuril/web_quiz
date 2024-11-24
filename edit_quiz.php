@@ -72,9 +72,9 @@ if(isset($_POST['title'])){
                         </div>
                         <label for="title" class="form-label">Waktu Quiz ( Contoh : 01:30:00 )</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="title" name="hour" value="<?= floor( $hour) ?>" placeholder="Jam">
-                                <input type="number" class="form-control" id="title" name="min" value="<?= floor($min) ?>" placeholder="Menit">
-                                <input type="number" class="form-control" id="title" name="sec" value="<?= $sec ?>" placeholder="Detik">
+                                <input type="number" class="form-control" id="title" name="hour" value="<?= str_pad(floor($hour), 2, '0', STR_PAD_LEFT) ?>" placeholder="Jam">
+                                <input type="number" class="form-control" id="title" name="min" value="<?= str_pad(floor($min), 2, '0', STR_PAD_LEFT) ?>" placeholder="Menit">
+                                <input type="number" class="form-control" id="title" name="sec" value="<?= str_pad(floor($sec), 2, '0', STR_PAD_LEFT) ?>" placeholder="Detik">
                             </div>
                         </div>
                     </div>

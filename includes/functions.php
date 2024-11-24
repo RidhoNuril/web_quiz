@@ -49,6 +49,29 @@ function get_all_data_subject()
     return $response;
 }
 
+function get_single_subject($subject_id){
+    include 'includes/db.php';
+
+    if (isset($subject_id)) {
+        $stmt = $db->prepare("SELECT * FROM subject WHERE subject_id = ?");
+        $stmt->bind_param("i", $subject_id);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $subject = $result->fetch_assoc();
+    
+        if (!$subject) {
+            echo "<script>alert('Subject tidak ditemukan!'); location.href='subject.php'</script>";
+            exit();
+        }
+    } else {
+        echo "id subject tidak disertakan!";
+        exit();
+    }
+
+    return $subject;
+}
+
 function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail)
 {
     include 'includes/db.php';
@@ -427,8 +450,6 @@ function get_question_for_quiz($id_quiz)
                 'options' => json_decode($row['options'], true)
             ];
         }
-    } else {
-        header('location: quiz.php');
     }
 
     return $response;

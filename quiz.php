@@ -85,6 +85,7 @@ $point = $count_question > 0 ? 100 / $count_question : 0;
 
 $data_quiz = get_data_quiz($id_quiz);
 $question = get_question_for_quiz($id_quiz);
+$subject = get_single_subject($data_quiz['subject_id']);
 
 if (!isset($_SESSION['question_index'])) {
     $_SESSION['question_index'] = 0;
@@ -141,7 +142,7 @@ if (isset($question[$_SESSION['question_index']])) {
                     <div id="progressBarFull"></div>
                 </div>
                 <audio controls loop autoplay style="width: 100%; transform: scale(0.9);" class="pt-3">
-                    <source src="../../Assets/BGSPAI.mp3">
+                    <source src="assets/music/<?= $subject['music'] ?>">
                 </audio>
             </div>
         </div>
