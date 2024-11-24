@@ -22,9 +22,11 @@ if(isset($_POST['subject_name'])){
     $subject_desc = isset($_POST['subject_desc']) ? strip_tags($_POST['subject_desc']) : '';
     $thumbnail = $_FILES['thumbnail']['name'] != '' ? $_FILES['thumbnail']['name'] : '';
     $tmp_name = isset($_FILES['thumbnail']['tmp_name']) ? $_FILES['thumbnail']['tmp_name'] : '';
+    $music = $_FILES['music']['name'] != '' ? $_FILES['music']['name'] : '';
+    $tmp_name_music = isset($_FILES['music']['tmp_name']) ? $_FILES['music']['tmp_name'] : '';
 
     
-    $insert_subject = insert_subject( $subject_name, $subject_desc,$tmp_name, $thumbnail);
+    $insert_subject = insert_subject( $subject_name, $subject_desc,$tmp_name, $thumbnail, $tmp_name_music ,$music);
     echo json_encode($insert_subject);
     exit();
 }
@@ -63,6 +65,10 @@ if(isset($_POST['subject_name'])){
                             <input type="file" class="form-control file_thumbnail mb-3" name="thumbnail" id="image">
                             <img src="assets/image/default_thumbnail.png" alt="" class="img-fluid w-100 rounded mb-2">
                             <div class="text-center">Recommended dimention 1280x720 pixel</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Musik</label>
+                            <input type="file" class="form-control file_thumbnail mb-3" name="music" id="music">
                         </div>
                     </div>
                 </div>

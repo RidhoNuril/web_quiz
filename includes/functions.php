@@ -72,7 +72,7 @@ function get_single_subject($subject_id){
     return $subject;
 }
 
-function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail)
+function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail, $tmp_name_music, $music)
 {
     include 'includes/db.php';
 
@@ -89,8 +89,18 @@ function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail)
             $set_thumbnail = 'default_thumbnail.png';
         }
 
-        $stmt = $db->prepare("INSERT INTO subject (thumbnail, subject_name, subject_desc) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $set_thumbnail, $subject_name, $subject_desc);
+        if ($music != '') {
+            $rand_music = rand() . '-' . $music;
+            $insert_dir_music = "assets/music/$rand_music";
+            move_uploaded_file($tmp_name_music, $insert_dir_music);
+
+            $set_music = $rand_music;
+        } else {
+            $set_music = 'default_thumbnail.png';
+        }
+
+        $stmt = $db->prepare("INSERT INTO subject (thumbnail, subject_name, subject_desc, music) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $set_thumbnail, $subject_name, $subject_desc, $set_music);
         $stmt->execute();
 
         $response = [
@@ -108,13 +118,13 @@ function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail)
     return $response;
 }
 
-function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $thumbnail)
+function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $thumbnail, $tmp_name_music, $music)
 {
     include 'includes/db.php';
 
     if ($subject_id && $subject_name && $subject_desc != '') {
 
-        $subject = $db->prepare("SELECT thumbnail FROM subject WHERE subject_id=?");
+        $subject = $db->prepare("SELECT thumbnail,music FROM subject WHERE subject_id=?");
         $subject->bind_param("i", $subject_id);
         $subject->execute();
         $result = $subject->get_result();
@@ -126,7 +136,6 @@ function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $t
                 $delete_dir = "assets/image/$thumbnail_name_db[thumbnail]";
                 unlink($delete_dir);
 
-
                 $rand_image = rand() . '-' . $thumbnail;
                 $update_dir = "assets/image/$rand_image";
                 move_uploaded_file($tmp_name, $update_dir);
@@ -136,8 +145,22 @@ function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $t
                 $set_thumbnail = $thumbnail_name_db['thumbnail'];
             }
 
-            $stmt = $db->prepare("UPDATE subject SET thumbnail=?, subject_name=?, subject_desc=? WHERE subject_id=?");
-            $stmt->bind_param("sssi", $set_thumbnail, $subject_name, $subject_desc, $subject_id);
+            if ($music != '') {
+                $delete_dir_music = "assets/music/$thumbnail_name_db[music]";
+                unlink($delete_dir_music);
+
+                $rand_music = rand() . '-' . $music;
+                $insert_dir_music = "assets/music/$rand_music";
+                move_uploaded_file($tmp_name_music, $insert_dir_music);
+    
+                $set_music = $rand_music;
+            } else {
+                $set_music = $thumbnail_name_db['music'];
+            }
+    
+
+            $stmt = $db->prepare("UPDATE subject SET thumbnail=?, subject_name=?, subject_desc=?, music=? WHERE subject_id=?");
+            $stmt->bind_param("ssssi", $set_thumbnail, $subject_name, $subject_desc, $set_music, $subject_id);
             $stmt->execute();
 
             $response = [
@@ -172,13 +195,17 @@ function delete_subject($id)
         $quiz_result = $quiz->get_result();
 
         if ($quiz_result->num_rows < 1) {
-            $subject = $db->prepare("SELECT thumbnail FROM subject WHERE subject_id=?");
+            $subject = $db->prepare("SELECT thumbnail, music FROM subject WHERE subject_id=?");
             $subject->bind_param("i", $id);
             $subject->execute();
             $result = $subject->get_result()->fetch_assoc();
 
             if ($result['thumbnail'] != 'default_thumbnail.png') {
                 $delete_file = "assets/image/$result[thumbnail]";
+                unlink($delete_file);
+            }
+            if ($result['music'] != '' || $result['music'] != null) {
+                $delete_file = "assets/music/$result[music]";
                 unlink($delete_file);
             }
 

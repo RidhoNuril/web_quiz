@@ -23,9 +23,11 @@ if(isset($_POST['subject_name'])){
     $subject_desc = isset($_POST['subject_desc']) ? strip_tags($_POST['subject_desc']) : '';
     $thumbnail = $_FILES['thumbnail']['name'] != '' ? $_FILES['thumbnail']['name'] : '';
     $tmp_name = isset($_FILES['thumbnail']['tmp_name']) ? $_FILES['thumbnail']['tmp_name'] : '';
+    $music = $_FILES['music']['name'] != '' ? $_FILES['music']['name'] : '';
+    $tmp_name_music = isset($_FILES['music']['tmp_name']) ? $_FILES['music']['tmp_name'] : '';
 
     
-    $updated_subject = update_subject($subject_id, $subject_name, $subject_desc,$tmp_name, $thumbnail);
+    $updated_subject = update_subject($subject_id, $subject_name, $subject_desc,$tmp_name, $thumbnail, $tmp_name_music, $music);
     echo json_encode($updated_subject);
     exit();
 }
@@ -68,6 +70,10 @@ $subject = get_single_subject($id_subject);
                             <label for="image" class="form-label">Image</label>
                             <input type="file" class="form-control file_thumbnail mb-3" name="thumbnail" id="image">
                             <img src="assets/image/<?= $subject['thumbnail']?>" alt="" class="img-fluid w-100 rounded">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image</label>
+                            <input type="file" class="form-control file_thumbnail mb-3" name="music" id="music">
                         </div>
                     </div>
                 </div>
