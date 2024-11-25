@@ -71,7 +71,7 @@ if(isset($_GET['delete_id'])){
                         $options = json_decode($row['options'], true);
                     ?>
                         <div class="col-md-6">
-                            <div class="card shadow-sm border rounded mb-3">
+                            <div class="card shadow-sm border rounded mb-4">
                                 <div class="card-header">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span>Soal <?= $no ?></span>
