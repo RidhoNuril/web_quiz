@@ -24,7 +24,7 @@ if (isset($_POST['answer'])) {
     $id_quiz = $_POST['id_quiz'];
 
 
-    $stmt = $db->prepare("SELECT * FROM questions WHERE id_question=?");
+    $stmt = $db->prepare("SELECT options FROM questions WHERE id_question=?");
     $stmt->bind_param("i", $question_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -57,6 +57,7 @@ if (isset($_POST['answer'])) {
         'status' => $status,
         'score' => $_SESSION['score'],
         'number' => intval($question_index) + 1,
+        'gambar' => isset($current_question['image_soal']) ? $current_question['image_soal'] : '',
         'id_question' => $current_question['id_question'],
         'question_text' => $current_question['question_text'],
         'options' => $current_question['options'],
@@ -133,10 +134,12 @@ if (isset($question[$_SESSION['question_index']])) {
             </div>
             <div class="questionBox col-md-9 pt-md-0 py-3 px-5">
                 <div class="fw-bold mb-3">Baca Soal Dengan Seksama</div>
-                <?php if ($current_question['image_soal'] != null) { ?>
-                    <img src="assets/image_soal/<?= $current_question['image_soal'] ?>" alt="image_soal"
-                        class="img-fluid border border-dark p-0 mb-3">
-                <?php } ?>
+                <div class="image_box">
+                    <?php if ($current_question['image_soal'] != null) { ?>
+                        <img src="assets/image_soal/<?= $current_question['image_soal'] ?>" alt="image_soal"
+                            class="image_soal img-fluid border border-dark p-0 mb-3">
+                    <?php } ?>
+                </div>
                 <div id="question" class="lh-base"><?= $current_question['question_text'] ?></div>
                 <div class="choice">
                     <?php foreach ($current_question['options']['options'] as $key_opt => $value_opt) { ?>
@@ -151,11 +154,9 @@ if (isset($question[$_SESSION['question_index']])) {
             </div>
             <div class="progressBox col-md-2">
                 <div class="timeBar p-3 border border-dark fs-6 mb-3">Waktu <span
-                        id="timeBar"><?= $data_quiz['quiz_time'] ?></span></div>
+                    id="timeBar"><?= $data_quiz['quiz_time'] ?></span></div>
                 <div class="scoreBar p-3 border border-dark fs-6 mb-3">Nilai <span
-                        id="scoreBar"><?= substr($_SESSION['score'], 0, 5) ?></span></div>
-                <div id="progressBar">
-                    <div id="progressBarFull"></div>
+                    id="scoreBar"><?= substr($_SESSION['score'], 0, 5) ?></span>
                 </div>
                 <audio controls loop autoplay style="width: 100%; transform: scale(0.9);" class="pt-3">
                     <source src="assets/music/<?= $subject['music'] ?>">
@@ -197,7 +198,7 @@ if (isset($question[$_SESSION['question_index']])) {
                 // Jika waktu habis, tampilkan pesan
                 if (timeLeft <= 0) {
                     clearInterval(countdown); // Hentikan countdown
-                    $("#timeBar").text("Waktu habis!"); // Tampilkan pesan "Waktu habis!"
+                    $("#timeBar").text(" habis!"); // Tampilkan pesan "Waktu habis!"
                     localStorage.removeItem("timeLeft"); // Menghapus waktu ketika selesai
                     $.ajax({
                         url: 'quiz.php',  // URL tempat Anda ingin memproses data (quiz.php)
@@ -257,10 +258,15 @@ if (isset($question[$_SESSION['question_index']])) {
                                 $('#question').empty().append(response.question_text);
                                 $('#scoreBar').text(parseFloat(response.score.toFixed(2)));
                                 $('#number').text(response.number + 1);
+                                if(response.gambar != ''){
+                                    $('.image_box').empty().append('<img src="assets/image_soal/'+ response.gambar +'" alt="image_soal" class="image_soal img-fluid border border-dark p-0 mb-3">');
+                                }else{
+                                    $('.image_box').empty();
+                                }
 
                                 $('.choice').empty();
 
-                                let options =response.options.options;
+                                let options = response.options.options;
 
                                 Object.entries(options).forEach(function([key, value]) {
                                     $('.choice')

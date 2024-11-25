@@ -96,7 +96,7 @@ function insert_subject($subject_name, $subject_desc, $tmp_name, $thumbnail, $tm
 
             $set_music = $rand_music;
         } else {
-            $set_music = 'default_thumbnail.png';
+            $set_music = null;
         }
 
         $stmt = $db->prepare("INSERT INTO subject (thumbnail, subject_name, subject_desc, music) VALUES (?, ?, ?, ?)");
@@ -146,8 +146,10 @@ function update_subject($subject_id, $subject_name, $subject_desc, $tmp_name, $t
             }
 
             if ($music != '') {
-                $delete_dir_music = "assets/music/$thumbnail_name_db[music]";
-                unlink($delete_dir_music);
+                if($thumbnail_name_db['music'] != null){
+                    $delete_dir_music = "assets/music/$thumbnail_name_db[music]";
+                    unlink($delete_dir_music);
+                }
 
                 $rand_music = rand() . '-' . $music;
                 $insert_dir_music = "assets/music/$rand_music";

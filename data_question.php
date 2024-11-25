@@ -90,7 +90,7 @@ if(isset($_GET['delete_id'])){
                                     <div class="mb-2"><?= $row['question_text'] ?></div>
                                     <div class="row">
                                         <?php foreach($options['options'] as $key_opt => $text_opt){ ?>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-2">
                                                 <span><span class="<?= $key_opt == $options['answer'] ? 'fw-bold' : '' ?>"><?= ucfirst($key_opt) ?>. </span><?= ucfirst($text_opt) ?></span>
                                             </div>
                                         <?php } ?>

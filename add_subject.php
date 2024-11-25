@@ -56,7 +56,11 @@ if(isset($_POST['subject_name'])){
                         </div>
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea name="subject_desc" class="w-100 form-control" id="deskripsi" placeholder="Masukkan deskripsi subject" style="min-height: 200px;" required></textarea>
+                            <textarea name="subject_desc" class="w-100 form-control" id="deskripsi" placeholder="Masukkan deskripsi subject" style="min-height: 250px;" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Musik</label>
+                            <input type="file" class="form-control music_subject mb-3" name="music" id="music">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -67,8 +71,9 @@ if(isset($_POST['subject_name'])){
                             <div class="text-center">Recommended dimention 1280x720 pixel</div>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="form-label">Musik</label>
-                            <input type="file" class="form-control file_thumbnail mb-3" name="music" id="music">
+                            <audio controls loop style="width: 100%; transform: scale(0.9);" class="show_audio">
+                                <source src="">
+                            </audio>
                         </div>
                     </div>
                 </div>
@@ -88,6 +93,16 @@ if(isset($_POST['subject_name'])){
                 
                 reader.onload = function(e) {
                     thumb.attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            $(".music_subject").change(function() {
+                let audio = $('.show_audio');
+                let reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    audio.attr('src', e.target.result);
                 }
                 reader.readAsDataURL(this.files[0]);
             });
