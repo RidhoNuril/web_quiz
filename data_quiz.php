@@ -199,7 +199,6 @@ if (isset($_GET['delete_id'])) {
 
         });
     </script>
-    <script src="app.js"></script>
 </body>
 
 </html>
