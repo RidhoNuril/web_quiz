@@ -281,8 +281,11 @@ function insert_quiz($subject_id, $judul_quiz, $hour, $min, $sec)
     $time = ($hours * 3600) + ($mins * 60) + $secs;
 
     if ($judul_quiz != '') {
-        $stmt = $db->prepare("INSERT INTO quiz (subject_id, title, quiz_time) VALUES (?, ?, ?)");
-        $stmt->bind_param("isi", $subject_id, $judul_quiz, $time);
+
+        $created_at = date("Y-m-d H:i:s");
+
+        $stmt = $db->prepare("INSERT INTO quiz (subject_id, title, quiz_time, created_at) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isis", $subject_id, $judul_quiz, $time, $created_at);
         $stmt->execute();
 
         $response = [
@@ -369,9 +372,11 @@ function insert_user($user_nis, $user_name, $user_password)
 {
     include 'includes/db.php';
 
+    $date = date("Y-m-d H:i:s");
+
     if ($user_nis && $user_password && $user_name != '') {
-        $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $user_nis, $user_name, $user_password);
+        $stmt = $db->prepare("INSERT INTO akun_users (user_nis, username, password, created_at) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $user_nis, $user_name, $user_password, $date);
         $stmt->execute();
 
         $response = [
@@ -509,8 +514,10 @@ function insert_question($id_quiz, $image_soal, $tmp_name, $question_text, $opti
         ];
 
         $options = json_encode($option, true);
-        $stmt = $db->prepare("INSERT INTO questions (id_quiz, image_soal, question_text, options) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $id_quiz, $rand_image, $question_text, $options);
+        $created_at = date("Y-m-d H:i:s");
+        
+        $stmt = $db->prepare("INSERT INTO questions (id_quiz, image_soal, question_text, options, created_at) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("issss", $id_quiz, $rand_image, $question_text, $options, $created_at);
         $stmt->execute();
 
         $response = [

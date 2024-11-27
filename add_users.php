@@ -56,11 +56,6 @@ if(isset($_POST['username'])){
                         <label class="form-label">Password</label>
                         <input type="password" name="password" class="form-control w-100" placeholder="Password" required>
                     </div>
-                    <p><?php
-                        if (isset($message)) {
-                            echo $message;
-                        } ?>
-                    </p>
                     <button type="submit" name="buat" class="btn btn-danger w-100 py-2 mb-4">Tambah</button>
                 </form>
                 <a href="dashboard.php" class="btn btn-danger w-75 py-2">Kembali</a>
@@ -68,7 +63,6 @@ if(isset($_POST['username'])){
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="app.js"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

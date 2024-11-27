@@ -11,4 +11,6 @@ if ($db->connect_error){
     echo "Koneksi database rusak";
     die("Error!");
 }
+
+date_default_timezone_set("Asia/Jakarta");
 ?>

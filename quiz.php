@@ -45,8 +45,9 @@ if (isset($_POST['answer'])) {
     if (isset($question[$_SESSION['question_index']])) {
         $current_question = $question[$_SESSION['question_index']];
     } else {
-        $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score) VALUES (?, ?, ?)");
-        $score_user->bind_param("sii", $_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
+        $completed_at = date("Y-m-d H:i:s");
+        $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score, completed_at) VALUES (?, ?, ?, ?)");
+        $score_user->bind_param("siis", $_SESSION['user_nis'], $id_quiz, $_SESSION['score'], $completed_at);
         $score_user->execute();
 
         echo json_encode(['redirect' => 'quiz_result.php?id_quiz=' . $id_quiz . '','score'=> $_SESSION['score'], 'status' => $status]);
@@ -70,8 +71,9 @@ if (isset($_POST['answer'])) {
 
 function end_quiz($db, $id_quiz)
 {
-    $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score) VALUES (?, ?, ?)");
-    $score_user->bind_param("sii", $_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
+    $completed_at = date("Y-m-d H:i:s");
+    $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score, completed_at) VALUES (?, ?, ?, ?)");
+    $score_user->bind_param("siis", $_SESSION['user_nis'], $id_quiz, $_SESSION['score'], $completed_at);
     $score_user->execute();
 
     echo json_encode(['redirect' => 'quiz_result.php?id_quiz=' . $id_quiz . '']);
@@ -110,8 +112,9 @@ if (!isset($_SESSION['question_index'])) {
 if (isset($question[$_SESSION['question_index']])) {
     $current_question = $question[$_SESSION['question_index']];
 } else {
-    $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score) VALUES (?, ?, ?)");
-    $score_user->bind_param("sii", $_SESSION['user_nis'], $id_quiz, $_SESSION['score']);
+    $completed_at = date("Y-m-d H:i:s");
+    $score_user = $db->prepare("INSERT INTO quiz_score (user_nis, id_quiz, score, completed_at) VALUES (?, ?, ?, ?)");
+    $score_user->bind_param("siis", $_SESSION['user_nis'], $id_quiz, $_SESSION['score'], $completed_at);
     $score_user->execute();
 
     header('location: quiz_result.php?id_quiz=' . $id_quiz . '');

@@ -120,7 +120,7 @@ if(isset($_GET['delete_id'])){
                         Apakah anda yakin ingin menghapus soal?
                     </div>
                     <div class="modal-footer">
-                        <form action="data_quiz.php" id="ajax-delete">
+                        <form action="data_question.php" id="ajax-delete">
                             <button type="button" class="btn_close_delete btn btn-secondary"
                                 data-bs-dismiss="modal">Tutup</button>
                             <button type="submit" class="btn btn-primary">Ya, Hapus</button>
@@ -137,7 +137,7 @@ if(isset($_GET['delete_id'])){
     <script>
         $(document).ready(function () {
 
-            $('#table').on('click','.btn_delete', function(){
+            $('.btn_delete').click(function(){
                 let question_id = $(this).data('question');
                 let row = $(this).closest('.col-md-6');
                 let form_delete = $('#ajax-delete');
