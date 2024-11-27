@@ -137,12 +137,12 @@ if(isset($_GET['delete_id'])){
     <script>
         $(document).ready(function () {
 
-            $('.btn_delete').click(function () {
+            $('#table').on('click','.btn_delete', function(){
                 let question_id = $(this).data('question');
                 let row = $(this).closest('.col-md-6');
                 let form_delete = $('#ajax-delete');
                 let jumlah_soal = $('#jumlah_soal').text();
-
+    
                 form_delete.attr('action', 'data_question.php?delete_id=' + question_id);
                 form_delete.data('row', row);
                 form_delete.data('jumlah_soal', jumlah_soal);

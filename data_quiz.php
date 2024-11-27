@@ -145,7 +145,7 @@ if (isset($_GET['delete_id'])) {
                 order: []
             });
 
-            $('.btn_delete').click(function() {
+            $('#table').on('click','.btn_delete', function(){
                 let quiz_id = $(this).data('quiz');
                 let row = $(this).closest('tr');
                 let form_delete = $('#ajax-delete');

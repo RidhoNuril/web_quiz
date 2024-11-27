@@ -107,8 +107,8 @@
     <script>
         $(document).ready(function(){
             $('#table').DataTable();
-
-            $('.btn_delete').click(function(){
+            
+            $('#table').on('click','.btn_delete', function(){
                 let subject_id = $(this).data('subject');
                 let row = $(this).closest('tr');
                 let form_delete = $('#ajax-delete');

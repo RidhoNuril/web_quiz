@@ -111,11 +111,11 @@ if(isset($_GET['delete_id'])){
         $(document).ready(function(){
             $('#table').DataTable();
             
-            $('.btn_delete').click(function(){
+            $('#table').on('click','.btn_delete', function(){
                 let user_nis = $(this).data('user');
                 let row = $(this).closest('tr');
                 let form_delete = $('#ajax-delete');
-
+    
                 form_delete.attr('action','view_account.php?delete_id='+user_nis);
                 form_delete.data('row',row);
             });
